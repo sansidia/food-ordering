@@ -58,6 +58,10 @@ int main() {
                     state--;
                     break;
                 }
+                if ((choice-'a'<0) || (choice-'a' >i)) {
+                    printf("Invalid answer, please select again.\n");
+                    break;
+                }
                 foodTypeChoice = choice - 'a';
                 state++;
                 break;
@@ -75,6 +79,10 @@ int main() {
                 getchar();
                 if (choice - 'a'==i) {
                     state--;
+                    break;
+                }
+                if ((choice-'a'<0) || (choice-'a' >i)) {
+                    printf("Invalid answer, please select again.\n");
                     break;
                 }
                 foodSubtypeChoice = choice - 'a';
@@ -98,6 +106,10 @@ int main() {
                     state--;
                     break;
                 }
+                if ((choice-'a'<0) || (choice-'a' >i)) {
+                    printf("Invalid answer, please select again.\n");
+                    break;
+                }
                 drinkChoice = choice - 'a';
                 state++;
                 break;
@@ -110,23 +122,31 @@ int main() {
                 printf("c) Go back\n");
                 choice = getchar();
                 getchar();
-                switch (choice) {
-                    case 'a': {
+                int choiceInt;
+                choiceInt = choice - 'a';
+                switch (choiceInt) {
+                    case 0: {
                         cutleryChoice = 1;
                         state++;
                         break;
                     }
-                    case 'b': {
+                    case 1: {
                         cutleryChoice = 0;
                         state++;
                         break;
                     }
-                    case 'c': {
+                    case 2: {
                         state--;
                         break;
                     }
+                    default: {
+                        printf("Invalid answer, please select again.\n");
+                        break;
+                    }
                 }
+                break;
             }
+            //additional info
             case 5: {
                 printf("Any additional information?\n");
                 gets(additionalInfo);
@@ -134,16 +154,23 @@ int main() {
                        "b) Go back\n");
                 choice = getchar();
                 getchar();
-                switch (choice) {
-                    case 'a': {
+                int choiceInt;
+                choiceInt = choice - 'a';
+                switch (choiceInt) {
+                    case 0: {
                         state++;
                         break;
                     }
-                    case 'b': {
+                    case 1: {
                         state--;
                         break;
                     }
+                    default: {
+                        printf("Invalid answer, please select again.\n");
+                        break;
+                    }
                 }
+                break;
             }
             //confirmation
             case 6: {
@@ -165,17 +192,24 @@ int main() {
                        "b) Go back\n");
                 choice = getchar();
                 getchar();
-                switch (choice) {
-                    case 'a': {
+                int choiceInt;
+                choiceInt = choice - 'a';
+                switch (choiceInt) {
+                    case 0: {
                         printf("Order confirmed! Thank you for buying from us, %s!", username);
                         isOrderConfirmed = 1;
                         break;
                     }
-                    case 'b': {
+                    case 1: {
                         state--;
                         break;
                     }
+                    default: {
+                        printf("Invalid answer, please select again.\n");
+                        break;
+                    }
                 }
+                break;
             }
         }
     }
