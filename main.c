@@ -186,7 +186,10 @@ int main() {
                 if (cutleryChoice == 0) printf("no\n");
                 else printf("yes\n");
                 printf("Additional information: %s\n", additionalInfo);
-                printf("Payment amount: %d\n", foodSubtypePrices[foodTypeChoice][foodSubtypeChoice] + drinkOptionPrices[drinkChoice]);
+                if (drinkChoice != 'e'-'a')
+                    printf("Payment amount: %d\n", foodSubtypePrices[foodTypeChoice][foodSubtypeChoice] + drinkOptionPrices[drinkChoice]);
+                else
+                    printf("Payment amount: %d\n", foodSubtypePrices[foodTypeChoice][foodSubtypeChoice]);
                 printf("-----------------\n");
                 printf("a) Confirm order\n"
                        "b) Go back\n");
