@@ -150,26 +150,7 @@ int main() {
             case 5: {
                 printf("Any additional information?\n");
                 gets(additionalInfo);
-                printf("a) Confirm additional information\n"
-                       "b) Go back\n");
-                choice = getchar();
-                getchar();
-                int choiceInt;
-                choiceInt = choice - 'a';
-                switch (choiceInt) {
-                    case 0: {
-                        state++;
-                        break;
-                    }
-                    case 1: {
-                        state--;
-                        break;
-                    }
-                    default: {
-                        printf("Invalid answer, please select again.\n");
-                        break;
-                    }
-                }
+                state++;
                 break;
             }
             //confirmation
@@ -204,7 +185,7 @@ int main() {
                         break;
                     }
                     case 1: {
-                        state--;
+                        state-=2;
                         break;
                     }
                     default: {
