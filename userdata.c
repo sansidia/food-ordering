@@ -5,7 +5,7 @@
 #include "userdata.h"
 #include <stdio.h>
 
-void readUserData(char username[], char password[]) {
+void signIn(char *username, char *password) {
     printf("Welcome to Food Thingies!\n");
     printf("Please sign in to continue!\n");
     printf("---Username:\n");
@@ -13,3 +13,4 @@ void readUserData(char username[], char password[]) {
     printf("---Password:\n");
     gets(password);
 }
+

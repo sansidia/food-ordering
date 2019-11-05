@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "userdata.h"
+#include "options.h"
 
 #define NO_FOOD_TYPE 3
 #define NO_FOOD_SUBTYPE 4
@@ -38,21 +39,17 @@ int main() {
         switch (state) {
             //log in
             case 0: {
-                readUserData(username, password);
+                signIn(username, password);
                 state++;
                 break;
             }
             //choose food
             case 1: {
                 printf("Please choose your meal:\n");
-                int i;
-                for (i = 0; i < NO_FOOD_TYPE; i++) {
-                    putchar('a'+i); printf(") %s\n", foodTypes[i]);
-                }
-                i = NO_FOOD_TYPE;
-                putchar('a'+i); printf(") Go back\n");
+                printMenu(NO_FOOD_TYPE, CHAR_LENGTH, foodTypes);
                 choice = getchar();
                 getchar();
+                int i = NO_FOOD_TYPE;
                 if (choice - 'a' == i) {
                     state--;
                     break;
