@@ -28,7 +28,7 @@ int main() {
     int foodSubtypeChoice = -1;
     char drinkOptions[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
     int drinkOptionPrices[NO_DRINKS] = {5, 5, 5, 4};
-    int drinkChoice = -1;
+    int drinkChoice = -2;
     int cutleryChoice = -1;
     char additionalInfo[100];
     char choice;
@@ -64,7 +64,7 @@ int main() {
             }
             //choose food subtype
             case 2: {
-                printMenuWithPrices(noFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
+                printMenuWithPrices(0, noFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
                 choice = getchar();
                 getchar();
                 int i = noFoodSubtypes[foodTypeChoice];
@@ -83,14 +83,8 @@ int main() {
             //choosing drink
             case 3: {
                 printf("Please choose a drink to go with your %s:\n", foodTypes[foodTypeChoice]);
-                int i;
-                for ( i = 0; i < NO_DRINKS; i++) {
-                    putchar('a'+i); printf(") %s: %d\n", drinkOptions[i], drinkOptionPrices[i]);
-                }
-                i = NO_DRINKS;
-                putchar('a'+i); printf(") No, thanks!\n");
-                i++;
-                putchar('a'+i); printf(") Go back\n");
+                printMenuWithPrices(1, NO_DRINKS, CHAR_LENGTH, drinkOptions, drinkOptionPrices);
+                int i = NO_DRINKS+1;
                 choice= getchar();
                 getchar();
                 if(choice - 'a' == i) {
@@ -158,7 +152,7 @@ int main() {
                 if (cutleryChoice == 0) printf("no\n");
                 else printf("yes\n");
                 printf("Additional information: %s\n", additionalInfo);
-                if (drinkChoice != 'e'-'a')
+                if (drinkChoice != NO_DRINKS)
                     printf("Payment amount: %d\n", foodSubtypePrices[foodTypeChoice][foodSubtypeChoice] + drinkOptionPrices[drinkChoice]);
                 else
                     printf("Payment amount: %d\n", foodSubtypePrices[foodTypeChoice][foodSubtypeChoice]);
