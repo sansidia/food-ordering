@@ -64,15 +64,10 @@ int main() {
             }
             //choose food subtype
             case 2: {
-                int i;
-                printf("Please choose the type of %s:\n", foodTypes[foodTypeChoice]);
-                for (i = 0; i < noFoodSubtypes[foodTypeChoice]; i++) {
-                    putchar('a'+i); printf(") %s: %d\n", foodSubtypes[foodTypeChoice][i], foodSubtypePrices[foodTypeChoice][i]);
-                }
-                i = noFoodSubtypes[foodTypeChoice];
-                putchar('a'+i); printf(") Go back\n");
+                printMenuWithPrices(noFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
                 choice = getchar();
                 getchar();
+                int i = noFoodSubtypes[foodTypeChoice];
                 if (choice - 'a'==i) {
                     state--;
                     break;
