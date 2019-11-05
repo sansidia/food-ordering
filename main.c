@@ -47,32 +47,20 @@ int main() {
             case 1: {
                 printf("Please choose your meal:\n");
                 printMenu(NO_FOOD_TYPE, CHAR_LENGTH, foodTypes);
-                choice = getchar();
-                getchar();
-                int i = NO_FOOD_TYPE;
-                if (choice - 'a' == i) {
-                    state--;
-                    break;
-                }
-                if ((choice-'a'<0) || (choice-'a' >i)) {
-                    printf("Invalid answer, please select again.\n");
-                    break;
-                }
-                foodTypeChoice = choice - 'a';
-                state++;
+                foodTypeChoice = makeChoice(&state, NO_FOOD_TYPE);
                 break;
             }
             //choose food subtype
             case 2: {
+                printf("Please choose your meal:\n");
                 printMenuWithPrices(0, noFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
                 choice = getchar();
                 getchar();
-                int i = noFoodSubtypes[foodTypeChoice];
-                if (choice - 'a'==i) {
+                if (choice - 'a'==noFoodSubtypes[foodTypeChoice]) {
                     state--;
                     break;
                 }
-                if ((choice-'a'<0) || (choice-'a' >i)) {
+                if ((choice-'a'<0) || (choice-'a' >noFoodSubtypes[foodTypeChoice])) {
                     printf("Invalid answer, please select again.\n");
                     break;
                 }
@@ -84,14 +72,13 @@ int main() {
             case 3: {
                 printf("Please choose a drink to go with your %s:\n", foodTypes[foodTypeChoice]);
                 printMenuWithPrices(1, NO_DRINKS, CHAR_LENGTH, drinkOptions, drinkOptionPrices);
-                int i = NO_DRINKS+1;
                 choice= getchar();
                 getchar();
-                if(choice - 'a' == i) {
+                if(choice - 'a' == NO_DRINKS+1) {
                     state--;
                     break;
                 }
-                if ((choice-'a'<0) || (choice-'a' >i)) {
+                if ((choice-'a'<0) || (choice-'a' >NO_DRINKS+1)) {
                     printf("Invalid answer, please select again.\n");
                     break;
                 }
