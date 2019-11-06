@@ -54,4 +54,3 @@ int modifyState(int state, int choice, int nrOfTypes, int stateModifier) {
         state++;
     return state;
 }
-
