@@ -9,15 +9,9 @@ int main() {
     char username[CHAR_LENGTH], password[CHAR_LENGTH];
     char foodTypes[NO_FOOD_TYPE][CHAR_LENGTH] = {"Pizza", "Pasta", "Salad"};
     int foodTypeChoice = -1, foodSubtypeChoice = -1, drinkChoice = -2, cutleryChoice = -1, choice;
-    int foodSubtypePrices[NO_FOOD_TYPE][NO_FOOD_SUBTYPE] = {
-            {21, 23, 19},
-            {23, 21},
-            {23, 22, 19, 21} };
+    int foodSubtypePrices[NO_FOOD_TYPE][NO_FOOD_SUBTYPE] = {{21, 23, 19},{23, 21},{23, 22, 19, 21} };
     int noFoodSubtypes[NO_FOOD_TYPE] = {3, 2, 4};
-    char foodSubtypes[NO_FOOD_TYPE][NO_FOOD_SUBTYPE][CHAR_LENGTH] = {
-            {"Pizza con Pollo", "Pizza Diavola", "Pizza Margherita"},
-            {"Chicken alfredo", "Mac&cheese"},
-            {"Tuna Salad", "Chicken Salad", "Greek Salad", "Cobb"} };
+    char foodSubtypes[NO_FOOD_TYPE][NO_FOOD_SUBTYPE][CHAR_LENGTH] = {{"Pizza con Pollo", "Pizza Diavola", "Pizza Margherita"},{"Chicken alfredo", "Mac&cheese"},{"Tuna Salad", "Chicken Salad", "Greek Salad", "Cobb"} };
     char drinkOptions[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
     int drinkOptionPrices[NO_DRINKS] = {5, 5, 5, 4};
     char cutleryOptions[2][5] = {"Yes", "No"};
