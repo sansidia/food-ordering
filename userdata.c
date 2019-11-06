@@ -5,6 +5,9 @@
 #include "userdata.h"
 #include <stdio.h>
 
+void printFormHeader(char[]);
+int paymentSum(int foodPrice, int drinkPrice, int drinkCode, int noDrink);
+
 void signIn(char *username, char *password) {
     printf("Welcome to Food Thingies!\n");
     printf("Please sign in to continue!\n");
@@ -15,22 +18,29 @@ void signIn(char *username, char *password) {
 }
 
 void printForm(char username[], char food[], int foodPrice, char drink[], int drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char additionalInfo[]) {
-    printf("-----------------\n"
-           "This is your order:\n"
-           "Name: %s\n"
-           "Food items:\n"
-           "--%s: %d\n", username, food, foodPrice);
+    printFormHeader(username);
+    printf("--%s: %d\n", food, foodPrice);
     if (drinkCode != noDrink) {
         printf("--%s: %d\n", drink, drinkPrice);
     }
-    printf("Cutlery: ");
-    if (cutleryChoice == 1) printf("no\n");
-    else printf("yes\n");
+    printf("Cutlery: %s\n", (cutleryChoice == 1? "no":"yes"));
     printf("Additional information: %s\n", additionalInfo);
-    if (drinkCode != noDrink)
-        printf("Payment amount: %d\n", foodPrice + drinkPrice);
-    else
-        printf("Payment amount: %d\n", foodPrice);
+    printf("Payment amount: %d\n", paymentSum(foodPrice, drinkPrice, drinkCode, noDrink));
     printf("-----------------\n");
+}
+
+void printFormHeader(char name[]) {
+    printf("-----------------\n"
+           "This is your order:\n"
+           "Name: %s\n"
+           "Food items:\n", name);
+}
+
+int paymentSum(int foodPrice, int drinkPrice, int drinkCode, int noDrink) {
+    int sum=0;
+    if(drinkCode != noDrink)
+        sum=foodPrice+drinkPrice;
+    else sum=foodPrice;
+    return sum;
 }
 

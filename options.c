@@ -54,3 +54,9 @@ int modifyState(int state, int choice, int nrOfTypes, int stateModifier) {
         state++;
     return state;
 }
+
+void getAdditionalInfo(int *state, char additionalInfo[]) {
+    printf("Any additional information?\n");
+    gets(additionalInfo);
+    *state= *state+1;
+}
