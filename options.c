@@ -5,8 +5,8 @@
 #include "options.h"
 #include <stdio.h>
 
-int isChoiceValid(int choice, int maxValue);
-int modifyState(int state, int choice, int maxValue);
+int isChoiceValid(int choice, int nrOfTypes);
+int modifyState(int state, int choice, int nrOfTypes, int stateModifier);
 
 void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize]) {
     int i;
@@ -24,44 +24,34 @@ void printMenuWithPrices(int id, int nrOfTypes, int stringSize, char types[nrOfT
     }
     if (id == 1) {
         putchar('a'+i); printf(") No, thanks!\n");
+        i++;
     }
-    i = nrOfTypes + 1;
     putchar('a'+i); printf(") Go back\n");
 }
 
-int makeChoice(int *state, int maxValue) {
+int makeChoice(int *state, int nrOfTypes, int stateModifier) {
     char input = getchar();
     getchar();
     int choice = input - 'a';
-    if (isChoiceValid(choice, maxValue)) {
-        *state = modifyState(*state, choice,maxValue);
+    if (isChoiceValid(choice, nrOfTypes)) {
+        *state = modifyState(*state, choice, nrOfTypes, stateModifier);
     }
     return choice;
-
-
-    /*
-    if (choice == NO_FOOD_TYPE) {
-        *state--;
-        break;
-    }
-    if ((choice<0) || (choice > NO_FOOD_TYPE)) {
-        printf("Invalid answer, please select again.\n");
-        break;
-    }*/
 }
 
-int isChoiceValid(int choice, int maxValue) {
-    if ((choice < 0) || (choice > maxValue)) {
+int isChoiceValid(int choice, int nrOfTypes) {
+    if ((choice < 0) || (choice > nrOfTypes)) {
         printf("Invalid answer, please select again.\n");
         return 0;
     }
     return 1;
 }
 
-int modifyState(int state, int choice, int maxValue) {
-    if (choice == maxValue)
-        state--;
+int modifyState(int state, int choice, int nrOfTypes, int stateModifier) {
+    if (choice == nrOfTypes)
+        state-= stateModifier;
     else
         state++;
     return state;
 }
+
