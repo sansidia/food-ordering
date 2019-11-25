@@ -6,6 +6,20 @@
 #define NO_DRINKS 4
 #define CHAR_LENGTH 20
 int main() {
+
+    //TODO: effective user inout management
+    //TODO: implement string parsing
+    char bigString[100];
+    gets(bigString);
+
+    
+
+    //TODO: break apart into functions
+    //TODO: variable redeclaration according to assignment requirements
+    //TODO: dynamic memory allocation
+
+
+
     char username[CHAR_LENGTH];
     char password[CHAR_LENGTH];
     char foodTypes[NO_FOOD_TYPE][CHAR_LENGTH] = {"Pizza", "Pasta", "Salad"};
@@ -14,11 +28,11 @@ int main() {
     int drinkChoice = -2;
     int cutleryChoice = -1;
     int choice;
-    int foodSubtypePrices[NO_FOOD_TYPE][NO_FOOD_SUBTYPE] = {
+    int foodSubtypePrices[NO_FOOD_TYPE][NO_FOOD_SUBTYPE] = {  //TODO: modify foodSubtypePrices sizes so that it it refers to the strict nr of subtypes
         {21, 23, 19},
         {23, 21},
         {23, 22, 19, 21} };
-    int noFoodSubtypes[NO_FOOD_TYPE] = {3, 2, 4};
+    int noOfFoodSubtypes[NO_FOOD_TYPE] = {3, 2, 4};
     char foodSubtypes[NO_FOOD_TYPE][NO_FOOD_SUBTYPE][CHAR_LENGTH] = {
         {"Pizza con Pollo", "Pizza Diavola", "Pizza Margherita"},
         {"Chicken alfredo", "Mac&cheese"},
@@ -39,8 +53,8 @@ int main() {
                 foodTypeChoice = makeChoice(&state, NO_FOOD_TYPE, 1); break;
             case 2: //food subtype selection
                 printf("Please choose your favourite %s:\n", foodTypes[foodTypeChoice]);
-                printMenuWithPrices(0, noFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
-                foodSubtypeChoice = makeChoice(&state, noFoodSubtypes[foodTypeChoice], 1); break;
+                printMenuWithPrices(0, noOfFoodSubtypes[foodTypeChoice], CHAR_LENGTH, foodSubtypes[foodTypeChoice], foodSubtypePrices[foodTypeChoice]);
+                foodSubtypeChoice = makeChoice(&state, noOfFoodSubtypes[foodTypeChoice], 1); break;
             case 3: //drink selection
                 printf("Please choose a drink to go with your %s:\n", foodTypes[foodTypeChoice]);
                 printMenuWithPrices(1, NO_DRINKS, CHAR_LENGTH, drinkOptions, drinkOptionPrices);
@@ -55,6 +69,6 @@ int main() {
                 printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice], foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],drinkOptionPrices[drinkChoice], drinkChoice, NO_DRINKS, cutleryChoice, additionalInfo);
                 printf("a) Confirm order\n" "b) Go back\n");
                 choice = makeChoice(&state, 1, 2);
-                if (choice == 0) printf("Order confirmed! Thank you for buying from us, %s!", username); break;
+                if (choice == 0) printf("Order confirmed! Thank you for buying from us, %s!", username); break; //TODO: check grading from previous assignment
         }}
     return 0;}

@@ -5,6 +5,8 @@
 #ifndef FOOD_ORDERING_OPTIONS_H
 #define FOOD_ORDERING_OPTIONS_H
 
+//TODO: break apart file (unclear grouping of functions in the options.h file)
+
 void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize]);
 void printMenuWithPrices(int id, int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize], int prices[]);
 int makeChoice(int *state, int nrOfTypes, int stateModifier);
