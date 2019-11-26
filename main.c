@@ -41,7 +41,7 @@ int main() {
         foodSubtypePrices[currentItem] = (double*) malloc(noOfFoodSubtypes[currentItem]* sizeof(double));
         //PARSE INPUT
         char* separator;
-        char separatorString[] = ",() :;";
+        char separatorString[] = ",() :;-";
         separator = strtok(userInput, separatorString);
         printf("separator is %s\n", separator);
         foodTypes[currentItem] = (char*) malloc(MAX_ITEM_LENGTH * sizeof(char));
