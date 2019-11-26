@@ -17,13 +17,40 @@ int main() {
     int noOfFoodTypes;
     scanf("%d", &noOfFoodTypes); getchar();
     printf("nr of food types is %d\n", noOfFoodTypes);
+
+    char** foodTypes = (char**) malloc(noOfFoodTypes* sizeof(char*));
+    char*** foodSubtypes = (char***) malloc(noOfFoodTypes* sizeof(char**));
+    int** noOfFoodSubtypes = (int**) malloc(noOfFoodTypes* sizeof(int*));
+    double** foodSubtypePrices = (double**) malloc(noOfFoodTypes* sizeof(double*));
+
     char *userInput = (char*) malloc(MAX_INPUT * sizeof(char));
     for (int currentItem = 0; currentItem < noOfFoodTypes; ++currentItem) {
         gets(userInput);
         printf("Input is \"%s\"\n", userInput);
+        //PARSE INPUT
+        char* separator;
+        char separatorString[] = ",() :;";
+        separator = strtok(userInput, separatorString);
+        strcpy(foodTypes[currentItem], separator);
+        printf("%s\n", foodTypes[currentItem]);
     }
 
     //MEMORY DEALLOCATION
+    for (int i = 0; i < noOfFoodTypes; ++i) {
+        free(foodTypes[i]);
+        free(foodSubtypePrices[i]);
+        for (int j = 0; j < *noOfFoodSubtypes[i]; ++j) {
+            free(foodSubtypes[i][j]);
+        }
+        free(foodSubtypes[i]);
+    }
+    free(foodSubtypePrices);
+    free(foodSubtypes);
+    for (int k = 0; k < noOfFoodTypes; ++k) {
+        free(noOfFoodSubtypes[k]);
+    }
+    free(noOfFoodSubtypes);
+    free(foodSubtypes);
     free(userInput);
 
     /*char userInput[100];
