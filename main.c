@@ -1,25 +1,81 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "parse-string.h"
 #include "userdata.h"
 #include "options.h"
 #define NO_FOOD_TYPE 3
 #define NO_FOOD_SUBTYPE 4
 #define NO_DRINKS 4
 #define CHAR_LENGTH 20
+#define MAX_INPUT 100
 int main() {
 
     //TODO: effective user inout management
     //TODO: implement string parsing
-    char bigString[100];
-    gets(bigString);
 
-    
+    int noOfFoodTypes;
+    scanf("%d", &noOfFoodTypes); getchar();
+    printf("nr of food types is %d\n", noOfFoodTypes);
+    char *userInput = (char*) malloc(MAX_INPUT * sizeof(char));
+    for (int currentItem = 0; currentItem < noOfFoodTypes; ++currentItem) {
+        gets(userInput);
+        printf("Input is \"%s\"\n", userInput);
+    }
+
+    //MEMORY DEALLOCATION
+    free(userInput);
+
+    /*char userInput[100];
+    gets(userInput);
+    //TODO: count how many subtypes there are
+    int noOfSubtypes = 0;
+    for (unsigned int i = 0; i < strlen(userInput); i++) {
+        if (userInput[i] == '(') noOfSubtypes++;
+    }*/
+
+
+/*Please load the data
+>3:
+>Pizza: (Pizza Carbonara - 21.00) (Pizza Diavola - 23.00) (Pizza Margherita - 19.00)
+>Pasta: (Chicken alfredo - 23.00) (Mac&cheese - 21.00)
+>Salad: (Tuna Salad - 23.00) (Chicken Salad - 22.00) (Greek Salad - 19.00) (Cobb - 21.00)
+>4:
+>(Coca-cola - 5), (Fanta -5), (Lipton - 5), (Water - 4)*/
+    /*char separatorString[] = " (),-:;";
+    char* splitter = strtok(userInput, separatorString);
+    char food[25], subtype[3][25];
+    char priceString[3][25]; double prices[3];
+
+
+    strcpy(food, splitter);
+    for (int k = 0; k < noOfSubtypes; k++) {
+        parse(NULL, subtype, priceString);
+        printf("subtype[%d] is %s and priceString[%d] is %s\n", k, subtype[k], k, priceString[k]);
+        char **pVoid = NULL;
+        prices[k] = strtod(priceString[k], pVoid);
+    }*/
+
+    /*int i= -1;
+    while (splitter!= NULL) {
+        splitter = strtok(NULL, separatorString);
+        if (splitter != NULL) {
+            i++;
+            strcpy(subtype[i], splitter);
+        }
+    }*/
+
+    /*printf("%s: ", food);
+    for (int j = 0; j < noOfSubtypes; j++) {
+        printf("%s - %.2f, ",subtype[j], prices[j]);
+    }*/
 
     //TODO: break apart into functions
     //TODO: variable redeclaration according to assignment requirements
     //TODO: dynamic memory allocation
 
 
-
+/*
     char username[CHAR_LENGTH];
     char password[CHAR_LENGTH];
     char foodTypes[NO_FOOD_TYPE][CHAR_LENGTH] = {"Pizza", "Pasta", "Salad"};
@@ -71,4 +127,6 @@ int main() {
                 choice = makeChoice(&state, 1, 2);
                 if (choice == 0) printf("Order confirmed! Thank you for buying from us, %s!", username); break; //TODO: check grading from previous assignment
         }}
+
+        */
     return 0;}
