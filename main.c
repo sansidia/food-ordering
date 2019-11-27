@@ -5,15 +5,7 @@
 #include "userdata.h"
 #include "options.h"
 #include <ctype.h>
-#define NO_FOOD_TYPE 3
-#define NO_FOOD_SUBTYPE 4
-#define NO_DRINKS 4
-#define MAX_ITEM_LENGTH 20
-#define MAX_INPUT 100
-#define UNINITIALIZED_VALUE -1
-#define PREV_IS_TEXT 0
-#define PREV_IS_NR 1
-#define ERROR_MSG "Invalid input, please try again."
+#include "macros.h"
 int main() {
 
     //TODO DONE: effective user inout management
@@ -70,8 +62,7 @@ int main() {
                     previousStringType = PREV_IS_TEXT;
                     foodSubtypes[currentItem][currentSubtype] = ( char * ) malloc(MAX_ITEM_LENGTH * sizeof(char));
                     strcpy(foodSubtypes[currentItem][currentSubtype], separator);
-                    printf("%s type %d is %s\n", foodTypes[currentItem], currentSubtype,
-                           foodSubtypes[currentItem][currentSubtype]);
+                    printf("%s type %d is %s\n", foodTypes[currentItem], currentSubtype, foodSubtypes[currentItem][currentSubtype]);
                 }
             } else if (isdigit(separator[0])) {
                 if (previousStringType == UNINITIALIZED_VALUE) {
@@ -124,10 +115,10 @@ int main() {
                 printf("Drink type %d is %s\n", currentItem, drinkOptions[currentItem]);
                 previousStringType = PREV_IS_TEXT;
             } else if (previousStringType == PREV_IS_NR) {
-                currentItem++; printf("I'm here!\n");
-                previousStringType = PREV_IS_TEXT;
-                drinkOptions[currentItem] = (char *) malloc(MAX_ITEM_LENGTH * sizeof(char));
-                strcpy(drinkOptions[currentItem], separator);
+                currentItem++; printf("I'm here! curritem is %d\n", currentItem);
+                previousStringType = PREV_IS_TEXT; printf("previousStringType = PREV_IS_TEXT;\n");
+                drinkOptions[currentItem] = (char *) malloc(MAX_ITEM_LENGTH * sizeof(char)); printf("drinkoptions malloc\n");
+                strcpy(drinkOptions[currentItem], separator); printf("strcpy\n");
                 printf("Drink type %d is %s\n", currentItem, drinkOptions[currentItem]);
             }
         } else if (isdigit(separator[0])) {
