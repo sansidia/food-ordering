@@ -7,7 +7,6 @@
 
 #define NO_FOOD_TYPE 3
 #define NO_FOOD_SUBTYPE 4
-#define NO_DRINKS 4
 #define MAX_ITEM_LENGTH 20
 #define MAX_INPUT 100
 #define UNINITIALIZED_VALUE -1

@@ -6,6 +6,50 @@
 #include "options.h"
 #include <ctype.h>
 #include "macros.h"
+
+void tokenize (char* string, char* tokens, char* returnString) {
+    int stringDelimited = 0;
+    while (stringDelimited == 0) {
+        char *p = strpbrk(string, tokens);
+        if (p - string != 0) {
+            strcpy(returnString, string);
+            returnString[p-string] = '\0';
+            strcpy(string, p);
+            stringDelimited = 1;
+        } else {
+            strcpy(string, string+1);
+        }
+    }
+}
+
+void separate(char* source, char* destination1, char* destination2) {
+    char* ptr = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+    tokenize(source, "-", destination1);
+    strcpy(destination1, strtok(source, "-"));
+    strcpy(destination2, strtok(NULL, "-"));
+}
+
+void cleanUp(char* string) {
+    int extraSpaces = 0;
+    for (unsigned int i = 0; i < strlen(string); ++i) {
+        if (string[i] == ' ') {
+            extraSpaces++;
+            if (isalpha(string[i+1]) || isdigit(string[i+1]))
+                break;
+        } else break;
+    }
+    strcpy(string, string+extraSpaces);
+    extraSpaces = 0;
+    for (unsigned int i = strlen(string)-1; i >= 0; --i) {
+        if (string[i] == ' ') {
+            extraSpaces++;
+            if (isalpha(string[i-1]) || isdigit(string[i-1]))
+                break;
+        } else break;
+    }
+    string[strlen(string)-extraSpaces] = '\0';
+}
+
 int main() {
 
     //TODO DONE: effective user inout management
@@ -29,109 +73,65 @@ int main() {
         for (unsigned int i = 0; i < strlen(userInput); ++i) {
             if (userInput[i] == '(') noOfFoodSubtypes[currentItem]++;
         }
-        foodSubtypes[currentItem] = (char**) malloc(noOfFoodSubtypes[currentItem] * sizeof(char*));
-        foodSubtypePrices[currentItem] = (double*) malloc(noOfFoodSubtypes[currentItem]* sizeof(double));
+        foodTypes[currentItem] = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+        foodSubtypes[currentItem] = (char **) malloc(noOfFoodSubtypes[currentItem] * sizeof(char *));
+        foodSubtypePrices[currentItem] = (double *) malloc(noOfFoodSubtypes[currentItem] * sizeof(double));
         //PARSE INPUT
-        char* separator;
+        char *separator;
         char separatorString[] = ",() :;-";
         separator = strtok(userInput, separatorString);
-        printf("separator is %s\n", separator);
-        foodTypes[currentItem] = ( char * ) malloc(MAX_ITEM_LENGTH * sizeof(char));
         strcpy(foodTypes[currentItem], separator);
-        printf("foodtype is %s\n", foodTypes[currentItem]);
-        int currentSubtype = UNINITIALIZED_VALUE;
-        int previousStringType = UNINITIALIZED_VALUE;
-        while ((separator = strtok(NULL, separatorString))) {
-            printf("sep is %s\n", separator);
-            if (isalpha(separator[0])) {
-                if (previousStringType == UNINITIALIZED_VALUE) {
-                    currentSubtype ++;
-                    previousStringType = PREV_IS_TEXT;
-                    foodSubtypes[currentItem][currentSubtype] = ( char * ) malloc(MAX_ITEM_LENGTH * sizeof(char));
-                    strcpy(foodSubtypes[currentItem][currentSubtype], separator);
-                    printf("%s type %d is %s\n", foodTypes[currentItem], currentSubtype,
-                           foodSubtypes[currentItem][currentSubtype]);
-                } else if (previousStringType == PREV_IS_TEXT) {
-                    strcat(foodSubtypes[currentItem][currentSubtype], " ");
-                    strcat(foodSubtypes[currentItem][currentSubtype], separator);
-                    printf("%s type %d is %s\n", foodTypes[currentItem], currentSubtype,
-                           foodSubtypes[currentItem][currentSubtype]);
-                    previousStringType = PREV_IS_TEXT;
-                } else if (previousStringType == PREV_IS_NR) {
-                    currentSubtype ++;
-                    previousStringType = PREV_IS_TEXT;
-                    foodSubtypes[currentItem][currentSubtype] = ( char * ) malloc(MAX_ITEM_LENGTH * sizeof(char));
-                    strcpy(foodSubtypes[currentItem][currentSubtype], separator);
-                    printf("%s type %d is %s\n", foodTypes[currentItem], currentSubtype, foodSubtypes[currentItem][currentSubtype]);
-                }
-            } else if (isdigit(separator[0])) {
-                if (previousStringType == UNINITIALIZED_VALUE) {
-                    printf(ERROR_MSG);
-                } else if (previousStringType == PREV_IS_TEXT) {
-                    previousStringType = PREV_IS_NR;
-                    char **pVoid = NULL;
-                    foodSubtypePrices[currentItem][currentSubtype] = strtod(separator, pVoid);
-                    printf("%s type %d is %s and costs %.2f\n", foodTypes[currentItem], currentSubtype,
-                           foodSubtypes[currentItem][currentSubtype], foodSubtypePrices[currentItem][currentSubtype]);
-                } else if (previousStringType == PREV_IS_NR) {
-                    printf(ERROR_MSG);
-                }
+        for (int currentSubItem = 0; currentSubItem < noOfFoodSubtypes[currentItem]; ++currentSubItem) {
+            separator = strtok(NULL, "()");
+            if(strcmp(separator, " ") == 0) {
+                currentSubItem--;
+            } else {
+                char *charPrice = (char *) malloc(MAX_ITEM_LENGTH * sizeof(char));
+                foodSubtypes[currentItem][currentSubItem] = (char *) malloc(MAX_ITEM_LENGTH * sizeof(char));
+                separate(separator, foodSubtypes[currentItem][currentSubItem], charPrice);
+                cleanUp(foodSubtypes[currentItem][currentSubItem]);
+                cleanUp(charPrice);
+                char *voidPtr;
+                foodSubtypePrices[currentItem][currentSubItem] = strtod(charPrice, &voidPtr);
             }
         }
     }
 
-    int noOfDrinks;
+    int noOfDrinks = 0;
     scanf("%d", &noOfDrinks); getchar();
+    printf("noofdrinks is %d\n", noOfDrinks);
 
-    char **drinkOptions = (char**) malloc(noOfDrinks* sizeof(char*));
-    double *drinkOptionPrices = (double*) malloc(noOfDrinks* sizeof(double));
+    char** drinkOptions = (char**) malloc(noOfDrinks* sizeof(char*));
+    double* drinkOptionPrices = (double*) malloc(noOfDrinks* sizeof(double));
 
     gets(userInput);
-    printf("Input is \"%s\"\n", userInput);
+    char* separator = strtok(userInput, "()");
+    drinkOptions[0] = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+    char* charPrice =(char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+    char * voidPtr;
 
-    int currentItem = UNINITIALIZED_VALUE;
-    char* separator;
-    char separatorString[] = ",() :;-";
-    separator = strtok(userInput, separatorString);
-    printf("separator is %s\n", separator);
-    drinkOptions[currentItem] = ( char * ) malloc(MAX_ITEM_LENGTH * sizeof(char));
-    int previousStringType = UNINITIALIZED_VALUE;
-    if(isalpha(separator[0])) {
-        currentItem++;
-        strcpy(drinkOptions[currentItem], separator);
-        //int currentSubtype = UNINITIALIZED_VALUE;
-        previousStringType = PREV_IS_TEXT;
-    } else {
-        printf(ERROR_MSG);
+    separate(separator, drinkOptions[0], charPrice);
+    cleanUp(drinkOptions[0]);
+    cleanUp(charPrice);
+    drinkOptionPrices[0] = strtod(charPrice, &voidPtr);
+    for (int currentDrink = 1; currentDrink < noOfDrinks; ++currentDrink) {
+        separator = strtok(NULL, "()");
+        separate(separator, drinkOptions[currentDrink], charPrice);
+        cleanUp(drinkOptions[currentDrink]);
+        cleanUp(charPrice);
+        drinkOptionPrices[currentDrink] = strtod(charPrice, &voidPtr);
     }
-    while ((separator = strtok(NULL, separatorString))) {
-        printf("sep is %s\n", separator);
-        if (isalpha(separator[0])) {
-            if (previousStringType == UNINITIALIZED_VALUE) {
-                printf(ERROR_MSG);
-            } else if (previousStringType == PREV_IS_TEXT) {
-                strcat(drinkOptions[currentItem], " ");
-                strcat(drinkOptions[currentItem], separator);
-                printf("Drink type %d is %s\n", currentItem, drinkOptions[currentItem]);
-                previousStringType = PREV_IS_TEXT;
-            } else if (previousStringType == PREV_IS_NR) {
-                currentItem++; printf("I'm here! curritem is %d\n", currentItem);
-                previousStringType = PREV_IS_TEXT; printf("previousStringType = PREV_IS_TEXT;\n");
-                drinkOptions[currentItem] = (char *) malloc(MAX_ITEM_LENGTH * sizeof(char)); printf("drinkoptions malloc\n");
-                strcpy(drinkOptions[currentItem], separator); printf("strcpy\n");
-                printf("Drink type %d is %s\n", currentItem, drinkOptions[currentItem]);
-            }
-        } else if (isdigit(separator[0])) {
-            if (previousStringType == UNINITIALIZED_VALUE) {
-                printf(ERROR_MSG);
-            } else if (previousStringType == PREV_IS_TEXT) {
-                previousStringType = PREV_IS_NR;
-                char **pVoid = NULL;
-                drinkOptionPrices[currentItem] = strtod(separator, pVoid);
-                printf("Drink type %d is %s and costs %.2f\n", currentItem, drinkOptions[currentItem], drinkOptionPrices[currentItem]);
-            } else if (previousStringType == PREV_IS_NR) {
-                printf(ERROR_MSG);
-            }
+
+    for (int l = 0; l < noOfFoodTypes; ++l) {
+        printf("%s:", foodTypes[l]);
+        for (int i = 0; i < noOfFoodSubtypes[l]; ++i) {
+            printf("%s - %.1f\n", foodSubtypes[l][i], foodSubtypePrices[l][i]);
+        }
+    }
+    for (int l = 0; l < noOfDrinks; ++l) {
+        printf("%s: %.1f; ", foodTypes[l]);
+        for (int i = 0; i < noOfFoodSubtypes[l]; ++i) {
+            printf("%s - %.1f\n", foodSubtypes[l][i], foodSubtypePrices[l][i]);
         }
     }
 
@@ -158,8 +158,8 @@ int main() {
         {"Pizza con Pollo", "Pizza Diavola", "Pizza Margherita"},
         {"Chicken alfredo", "Mac&cheese"},
         {"Tuna Salad", "Chicken Salad", "Greek Salad", "Cobb"} };*/
-    //char drinkOptions[NO_DRINKS][MAX_ITEM_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
-    //int drinkOptionPrices[NO_DRINKS] = {5, 5, 5, 4};
+    //char drinkOptions[noOfDrinks][MAX_ITEM_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
+    //int drinkOptionPrices[noOfDrinks] = {5, 5, 5, 4};
     char **cutleryOptions = NULL; strcpy(cutleryOptions[0], "Yes"); strcpy(cutleryOptions[1], "No");
     char additionalInfo[100];
     int state = 0, isOrderConfirmed = 0;
@@ -178,8 +178,8 @@ int main() {
                 foodSubtypeChoice = makeChoice(&state, noOfFoodSubtypes[foodTypeChoice], 1); break;
             case 3: //drink selection
                 printf("Please choose a drink to go with your %s:\n", foodTypes[foodTypeChoice]);
-                printMenuWithPrices(1, NO_DRINKS, drinkOptions, drinkOptionPrices);
-                drinkChoice = makeChoice(&state, NO_DRINKS + 1, 1); break;
+                printMenuWithPrices(1, noOfDrinks, drinkOptions, drinkOptionPrices);
+                drinkChoice = makeChoice(&state, noOfDrinks + 1, 1); break;
             case 4: //cutlery selection
                 printf("Do you want cutlery?\n");
                 printMenu(2, cutleryOptions);
@@ -187,7 +187,7 @@ int main() {
             case 5: //additional info
                 getAdditionalInfo(&state, additionalInfo); break;
             case 6: //confirmation
-                printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice], foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],drinkOptionPrices[drinkChoice], drinkChoice, NO_DRINKS, cutleryChoice, additionalInfo);
+                printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice], foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],drinkOptionPrices[drinkChoice], drinkChoice, noOfDrinks, cutleryChoice, additionalInfo);
                 printf("a) Confirm order\n" "b) Go back\n");
                 choice = makeChoice(&state, 1, 2);
                 if (choice == 0) printf("Order confirmed! Thank you for buying from us, %s!", username); break; //TODO: check grading from previous assignment
