@@ -7,10 +7,10 @@
 
 //TODO: break apart file (unclear grouping of functions in the options.h file)
 
-void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize]);
-void printMenuWithPrices(int id, int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize], int prices[]);
+void printMenu(int nrOfTypes, char **types);
+void printMenuWithPrices(int id, int stringSize, char **types, double *prices);
 int makeChoice(int *state, int nrOfTypes, int stateModifier);
-void getAdditionalInfo(int *state, char additionalInfo[]);
+void getAdditionalInfo(int *state, char* additionalInfo);
 
 
 #endif //FOOD_ORDERING_OPTIONS_H

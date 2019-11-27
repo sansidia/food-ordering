@@ -5,8 +5,8 @@
 #include "userdata.h"
 #include <stdio.h>
 
-void printFormHeader(char[]);
-int paymentSum(int foodPrice, int drinkPrice, int drinkCode, int noDrink);
+void printFormHeader(char*);
+double paymentSum(double foodPrice, double drinkPrice, int drinkCode, int noDrink);
 
 void signIn(char *username, char *password) {
     printf("Welcome to Food Thingies!\n");
@@ -17,11 +17,11 @@ void signIn(char *username, char *password) {
     gets(password);
 }
 
-void printForm(char username[], char food[], int foodPrice, char drink[], int drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char additionalInfo[]) {
+void printForm(char *username, char *food, double foodPrice, char *drink, double drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
     printFormHeader(username);
-    printf("--%s: %d\n", food, foodPrice);
+    printf("--%s: %f\n", food, foodPrice);
     if (drinkCode != noDrink) {
-        printf("--%s: %d\n", drink, drinkPrice);
+        printf("--%s: %f\n", drink, drinkPrice);
     }
     printf("Cutlery: %s\n", (cutleryChoice == 1? "no":"yes"));
     printf("Additional information: %s\n", additionalInfo);
@@ -29,15 +29,15 @@ void printForm(char username[], char food[], int foodPrice, char drink[], int dr
     printf("-----------------\n");
 }
 
-void printFormHeader(char name[]) {
+void printFormHeader(char *name) {
     printf("-----------------\n"
            "This is your order:\n"
            "Name: %s\n"
            "Food items:\n", name);
 }
 
-int paymentSum(int foodPrice, int drinkPrice, int drinkCode, int noDrink) {
-    int sum=0;
+double paymentSum(double foodPrice, double drinkPrice, int drinkCode, int noDrink) {
+    double sum=0;
     if(drinkCode != noDrink)
         sum=foodPrice+drinkPrice;
     else sum=foodPrice;
