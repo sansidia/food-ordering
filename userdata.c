@@ -17,7 +17,7 @@ void signIn(char *username, char *password) {
     gets(password);
 }
 
-void printForm(char* username, char* food, int foodPrice, char* drink, int drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
+void printForm(char* username, char* food, double foodPrice, char* drink, double drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
     printFormHeader(username);
     printf("--%s: %d\n", food, foodPrice);
     if (drinkCode != noDrink) {

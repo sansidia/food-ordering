@@ -17,10 +17,10 @@ void printMenu(int nrOfTypes, char **types) {
     putchar('a'+i); printf(") Go back\n");
 }
 
-void printMenuWithPrices(int id, int nrOfTypes, char **types, int *prices) {
+void printMenuWithPrices(int id, int nrOfTypes, char **types, double *prices) {
     int i;
     for (i = 0; i < nrOfTypes; i++) {
-        putchar('a'+i); printf(") %s (%d)\n", types[i], prices[i]);
+        putchar('a'+i); printf(") %s (%.2f)\n", types[i], prices[i]);
     }
     if (id == 1) {
         putchar('a'+i); printf(") No, thanks!\n");
