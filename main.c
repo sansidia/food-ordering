@@ -1,15 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "userdata.h"
 #include "options.h"
-#define NO_FOOD_TYPE 3
-#define NO_DRINKS 4
+//#define NO_FOOD_TYPE 3
+//#define NO_DRINKS 4
 #define CHAR_LENGTH 20
 int main() {
+    int noOfFoodTypes = 0, noOfDrinks = 0;
+    //char* voidPtr;
+    char* userInput = (char*)malloc(5* CHAR_LENGTH* sizeof(char));
+    gets(userInput);
+    for (unsigned int i = 0; i < strlen(userInput); ++i) {
+        if (!isdigit(userInput[i])) {
+            userInput[i] = '\0';
+            break;
+        }
+    }
+    for (int i = strlen(userInput)-1; i >= 0 ; i--) {
+        noOfFoodTypes = noOfFoodTypes*10 + (userInput[i]- '0');
+    }
+    gets(userInput);
+    for (unsigned int i = 0; i < strlen(userInput); ++i) {
+        if (!isdigit(userInput[i])) {
+            userInput[i] = '\0';
+            break;
+        }
+    }
+    for (int i = strlen(userInput)-1; i >= 0 ; i--) {
+        noOfDrinks = noOfDrinks*10 + (userInput[i]- '0');
+    }
     char *username = (char*)malloc(CHAR_LENGTH* sizeof(char));
     char *password = (char*)malloc(CHAR_LENGTH* sizeof(char));;
-    char **foodTypes = (char**)malloc(NO_FOOD_TYPE* sizeof(char*));
+    char **foodTypes = (char**)malloc(noOfFoodTypes* sizeof(char*));
     foodTypes[0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(foodTypes[0], "Pizza");
     foodTypes[1] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(foodTypes[1], "Pasta");
     foodTypes[2] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(foodTypes[2], "Salad");// {"Pizza", "Pasta", "Salad"};
@@ -18,9 +42,9 @@ int main() {
     int drinkChoice = -2;
     int cutleryChoice = -1;
     int choice;
-    int *noFoodSubtypes = (int*)malloc(NO_FOOD_TYPE* sizeof(int));
+    int *noFoodSubtypes = (int*)malloc(noOfFoodTypes* sizeof(int));
     noFoodSubtypes[0] = 3; noFoodSubtypes[1] = 2; noFoodSubtypes[2] = 4;//{3, 2, 4};
-    int **foodSubtypePrices = (int**)malloc(NO_FOOD_TYPE* sizeof(int*));
+    int **foodSubtypePrices = (int**)malloc(noOfFoodTypes* sizeof(int*));
     foodSubtypePrices[0] = (int*)malloc(noFoodSubtypes[0]* sizeof(int)); foodSubtypePrices[0][0] = 21; foodSubtypePrices[0][1] = 23; foodSubtypePrices[0][2] = 19;
     foodSubtypePrices[1] = (int*)malloc(noFoodSubtypes[1]* sizeof(int)); foodSubtypePrices[1][0] = 23; foodSubtypePrices[1][1] = 21;
     foodSubtypePrices[2] = (int*)malloc(noFoodSubtypes[2]* sizeof(int)); foodSubtypePrices[2][0] = 23; foodSubtypePrices[2][1] = 22; foodSubtypePrices[2][2] = 19; foodSubtypePrices[2][3] = 21;
@@ -28,7 +52,7 @@ int main() {
         {21, 23, 19},
         {23, 21},
         {23, 22, 19, 21} };*/
-    char ***foodSubtypes = (char***)malloc(NO_FOOD_TYPE* sizeof(char*));
+    char ***foodSubtypes = (char***)malloc(noOfFoodTypes* sizeof(char*));
     foodSubtypes[0] = (char**)malloc(noFoodSubtypes[0]* sizeof(char*));
         foodSubtypes[0][0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(foodSubtypes[0][0], "Pizza con Pollo");
         foodSubtypes[0][1] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(foodSubtypes[0][1], "Pizza Diavola");
@@ -45,12 +69,12 @@ int main() {
         //{"Pizza con Pollo", "Pizza Diavola", "Pizza Margherita"},
         //{"Chicken alfredo", "Mac&cheese"},
         //{"Tuna Salad", "Chicken Salad", "Greek Salad", "Cobb"} };
-    char **drinkOptions = (char**)malloc(NO_DRINKS* sizeof(char*));
+    char **drinkOptions = (char**)malloc(noOfDrinks* sizeof(char*));
     drinkOptions[0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[0], "Coca-cola");
     drinkOptions[1] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[1], "fanta");
     drinkOptions[2] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[2], "lipton");
     drinkOptions[3] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[3], "Water");//[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
-    int* drinkOptionPrices = (int*)malloc(NO_DRINKS* sizeof(int)); drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
+    int* drinkOptionPrices = (int*)malloc(noOfDrinks* sizeof(int)); drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
     char **cutleryOptions = (char**)malloc(2* sizeof(char));
     cutleryOptions[0] = (char*)malloc(4* sizeof(char)); strcpy(cutleryOptions[0], "Yes");
     cutleryOptions[1] = (char*)malloc(3* sizeof(char)); strcpy(cutleryOptions[1], "No");//[2][5] = {"Yes", "No"};
@@ -63,8 +87,8 @@ int main() {
                 state++; break;
             case 1: //food type selection
                 printf("Please choose your meal:\n");
-                printMenu(NO_FOOD_TYPE, foodTypes);
-                foodTypeChoice = makeChoice(&state, NO_FOOD_TYPE, 1); break;
+                printMenu(noOfFoodTypes, foodTypes);
+                foodTypeChoice = makeChoice(&state, noOfFoodTypes, 1); break;
             case 2: //food subtype selection
                 printf("Please choose your favourite %s:\n", foodTypes[foodTypeChoice]);
                 printMenuWithPrices(0, noFoodSubtypes[foodTypeChoice], foodSubtypes[foodTypeChoice],
@@ -72,8 +96,8 @@ int main() {
                 foodSubtypeChoice = makeChoice(&state, noFoodSubtypes[foodTypeChoice], 1); break;
             case 3: //drink selection
                 printf("Please choose a drink to go with your %s:\n", foodTypes[foodTypeChoice]);
-                printMenuWithPrices(1, NO_DRINKS, drinkOptions, drinkOptionPrices);
-                drinkChoice = makeChoice(&state, NO_DRINKS + 1, 1); break;
+                printMenuWithPrices(1, noOfDrinks, drinkOptions, drinkOptionPrices);
+                drinkChoice = makeChoice(&state, noOfDrinks + 1, 1); break;
             case 4: //cutlery selection
                 printf("Do you want cutlery?\n");
                 printMenu(2, cutleryOptions);
@@ -81,7 +105,7 @@ int main() {
             case 5: //additional info
                 getAdditionalInfo(&state, additionalInfo); break;
             case 6: //confirmation
-                printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice], foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],drinkOptionPrices[drinkChoice], drinkChoice, NO_DRINKS, cutleryChoice, additionalInfo);
+                printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice], foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],drinkOptionPrices[drinkChoice], drinkChoice, noOfDrinks, cutleryChoice, additionalInfo);
                 printf("a) Confirm order\n" "b) Go back\n");
                 choice = makeChoice(&state, 1, 2);
                 if (choice == 0) { printf("Order confirmed! Thank you for buying from us, %s!", username); isOrderConfirmed = 1;}
@@ -92,20 +116,20 @@ int main() {
     for (int i = 0; i < 2; ++i) free(cutleryOptions[i]);
     free(cutleryOptions);
     free(drinkOptionPrices);
-    for (int i = 0; i < NO_DRINKS; ++i) free(drinkOptions[i]);
+    for (int i = 0; i < noOfDrinks; ++i) free(drinkOptions[i]);
     free(drinkOptions);
-    for (int i = 0; i < NO_FOOD_TYPE; ++i) {
+    for (int i = 0; i < noOfFoodTypes; ++i) {
         for (int j = 0; j < noFoodSubtypes[i]; ++j) free(foodSubtypes[i][j]);
         free(foodSubtypes[i]);
     }
     free(foodSubtypes);
-    for (int i = 0; i < NO_FOOD_TYPE; ++i) free(foodSubtypePrices);
+    for (int i = 0; i < noOfFoodTypes; ++i) free(foodSubtypePrices);
     free(foodSubtypePrices);
     free(noFoodSubtypes);
-    for (int i = 0; i < NO_FOOD_TYPE; ++i) free(foodTypes[i]);
+    for (int i = 0; i < noOfFoodTypes; ++i) free(foodTypes[i]);
     free(foodTypes);
     free(password);
     free(username);
+    free(userInput);
     return 0;
-
 }
