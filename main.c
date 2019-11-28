@@ -25,8 +25,7 @@ void tokenize (char* string, char* tokens, char* returnString) {
 void separate(char* source, char* destination1, char* destination2) {
     char* ptr = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
     tokenize(source, "-", destination1);
-    strcpy(destination1, strtok(source, "-"));
-    strcpy(destination2, strtok(NULL, "-"));
+    tokenize(source, "-", destination2);
 }
 
 void cleanUp(char* string) {
@@ -77,12 +76,14 @@ int main() {
         foodSubtypes[currentItem] = (char **) malloc(noOfFoodSubtypes[currentItem] * sizeof(char *));
         foodSubtypePrices[currentItem] = (double *) malloc(noOfFoodSubtypes[currentItem] * sizeof(double));
         //PARSE INPUT
-        char *separator;
+        char *separator = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
         char separatorString[] = ",() :;-";
-        separator = strtok(userInput, separatorString);
+        tokenize(userInput, separatorString, separator);
+        //separator = strtok(userInput, separatorString);
         strcpy(foodTypes[currentItem], separator);
         for (int currentSubItem = 0; currentSubItem < noOfFoodSubtypes[currentItem]; ++currentSubItem) {
-            separator = strtok(NULL, "()");
+            tokenize(userInput, "()", separator);
+            //separator = strtok(NULL, "()");
             if(strcmp(separator, " ") == 0) {
                 currentSubItem--;
             } else {
@@ -105,7 +106,9 @@ int main() {
     double* drinkOptionPrices = (double*) malloc(noOfDrinks* sizeof(double));
 
     gets(userInput);
-    char* separator = strtok(userInput, "()");
+    /*char* separator = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+    tokenize(userInput, "()", separator);
+            //strtok(userInput, "()");
     drinkOptions[0] = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
     char* charPrice =(char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
     char * voidPtr;
@@ -113,13 +116,24 @@ int main() {
     separate(separator, drinkOptions[0], charPrice);
     cleanUp(drinkOptions[0]);
     cleanUp(charPrice);
-    drinkOptionPrices[0] = strtod(charPrice, &voidPtr);
-    for (int currentDrink = 1; currentDrink < noOfDrinks; ++currentDrink) {
-        separator = strtok(NULL, "()");
+    drinkOptionPrices[0] = strtod(charPrice, &voidPtr);*/
+    for (int currentDrink = 0; currentDrink < noOfDrinks; ++currentDrink) {
+        char* separator = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+        tokenize(userInput, "()", separator);
+        //strtok(userInput, "()");
+        drinkOptions[currentDrink] = (char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+        char* charPrice =(char*) malloc(MAX_ITEM_LENGTH* sizeof(char));
+        char * voidPtr;
+
         separate(separator, drinkOptions[currentDrink], charPrice);
         cleanUp(drinkOptions[currentDrink]);
         cleanUp(charPrice);
         drinkOptionPrices[currentDrink] = strtod(charPrice, &voidPtr);
+        /*separator = strtok(NULL, "()");
+        separate(separator, drinkOptions[currentDrink], charPrice);
+        cleanUp(drinkOptions[currentDrink]);
+        cleanUp(charPrice);
+        drinkOptionPrices[currentDrink] = strtod(charPrice, &voidPtr);*/
     }
 
     for (int l = 0; l < noOfFoodTypes; ++l) {
