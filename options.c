@@ -8,7 +8,7 @@
 int isChoiceValid(int choice, int nrOfTypes);
 int modifyState(int state, int choice, int nrOfTypes, int stateModifier);
 
-void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize]) {
+void printMenu(int nrOfTypes, char **types) {
     int i;
     for (i = 0; i < nrOfTypes; i++) {
         putchar('a'+i); printf(") %s\n", types[i]);
@@ -17,7 +17,7 @@ void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize])
     putchar('a'+i); printf(") Go back\n");
 }
 
-void printMenuWithPrices(int id, int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize], int prices[]) {
+void printMenuWithPrices(int id, int nrOfTypes, char **types, int *prices) {
     int i;
     for (i = 0; i < nrOfTypes; i++) {
         putchar('a'+i); printf(") %s (%d)\n", types[i], prices[i]);

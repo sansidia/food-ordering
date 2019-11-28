@@ -5,7 +5,7 @@
 #include "userdata.h"
 #include <stdio.h>
 
-void printFormHeader(char[]);
+void printFormHeader(char*);
 int paymentSum(int foodPrice, int drinkPrice, int drinkCode, int noDrink);
 
 void signIn(char *username, char *password) {
@@ -17,7 +17,7 @@ void signIn(char *username, char *password) {
     gets(password);
 }
 
-void printForm(char username[], char food[], int foodPrice, char drink[], int drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char additionalInfo[]) {
+void printForm(char* username, char* food, int foodPrice, char* drink, int drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
     printFormHeader(username);
     printf("--%s: %d\n", food, foodPrice);
     if (drinkCode != noDrink) {
@@ -29,7 +29,7 @@ void printForm(char username[], char food[], int foodPrice, char drink[], int dr
     printf("-----------------\n");
 }
 
-void printFormHeader(char name[]) {
+void printFormHeader(char* name) {
     printf("-----------------\n"
            "This is your order:\n"
            "Name: %s\n"
