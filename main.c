@@ -5,7 +5,7 @@
 #include "userdata.h"
 #include "options.h"
 //#define NO_FOOD_TYPE 3
-//#define NO_DRINKS 4
+#define LOAD_DATA "Please load the data\n"
 #define CHAR_LENGTH 20
 
 void cleanExtraChars(char *string, char *chars) {
@@ -30,6 +30,7 @@ void cleanExtraChars(char *string, char *chars) {
 }
 
 int main() {
+    printf(LOAD_DATA);
     int noOfFoodTypes = 0, noOfDrinks = 0;
     ///FOODS
     char* userInput = (char*)malloc(8* CHAR_LENGTH* sizeof(char));
@@ -122,6 +123,7 @@ int main() {
 
         strcpy(object, strtok(userInput, ")"));
         if (currentType!= noOfDrinks-1) strcpy(userInput, strtok(NULL, ""));
+        cleanExtraChars(object, ", ");
         strcpy(drinkOptions[currentType], strtok(object, "()-"));
         strcpy(object, strtok(NULL, ""));
         cleanExtraChars(drinkOptions[currentType], "()- ");
