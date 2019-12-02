@@ -102,11 +102,32 @@ int main() {
         noOfDrinks = noOfDrinks*10 + (userInput[i]- '0');
     }
     char **drinkOptions = (char**)malloc(noOfDrinks* sizeof(char*));
-    drinkOptions[0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[0], "Coca-cola");
+    /*drinkOptions[0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[0], "Coca-cola");
     drinkOptions[1] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[1], "fanta");
     drinkOptions[2] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[2], "lipton");
-    drinkOptions[3] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[3], "Water");//[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};
-    double* drinkOptionPrices = (double*)malloc(noOfDrinks* sizeof(double)); drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
+    drinkOptions[3] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[3], "Water");//[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};*/
+    double* drinkOptionPrices = (double*)malloc(noOfDrinks* sizeof(double)); //drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
+
+    for(int currentType=0;currentType<noOfDrinks;++currentType) {
+        gets(userInput);
+        drinkOptions[currentType] = (char*) malloc(CHAR_LENGTH* sizeof(char));
+
+        ///PARSE
+        char* object = (char*)malloc(2*CHAR_LENGTH*sizeof(char));
+
+        strcpy(object, strtok(userInput, ")"));
+        if (currentType!= noOfDrinks-1) strcpy(userInput, strtok(NULL, ""));
+        strcpy(drinkOptions[currentType], strtok(object, "()-"));
+        strcpy(object, strtok(NULL, ""));
+        cleanExtraChars(drinkOptions[currentType], "()- ");
+        cleanExtraChars(object, "()- ");
+        char *ptr;
+        drinkOptionPrices[currentType] = strtod(object, &ptr);
+
+        free(object);
+    }
+
+
     char **cutleryOptions = (char**)malloc(2* sizeof(char));
     cutleryOptions[0] = (char*)malloc(4* sizeof(char)); strcpy(cutleryOptions[0], "Yes");
     cutleryOptions[1] = (char*)malloc(3* sizeof(char)); strcpy(cutleryOptions[1], "No");//[2][5] = {"Yes", "No"};
