@@ -29,13 +29,27 @@ void cleanExtraChars(char *string, char *chars) {
     string[strlen(string) - extraChars] = '\0';
 }
 
+int getNrOfTypes(char* input) {
+    int number = 0;
+    for (unsigned int i = 0; i < strlen(input); ++i) {
+        if (!isdigit(input[i])) {
+            input[i] = '\0';
+            break;
+        }
+    }
+    for (int i = strlen(input)-1; i >= 0 ; i--) {
+        number = number*10 + (input[i]- '0');
+    }
+    return number;
+}
+
 int main() {
     printf(LOAD_DATA);
     int noOfFoodTypes = 0, noOfDrinks = 0;
     ///FOODS
     char* userInput = (char*)malloc(8* CHAR_LENGTH* sizeof(char));
     gets(userInput);
-    for (unsigned int i = 0; i < strlen(userInput); ++i) {
+    /*for (unsigned int i = 0; i < strlen(userInput); ++i) {
         if (!isdigit(userInput[i])) {
             userInput[i] = '\0';
             break;
@@ -43,7 +57,8 @@ int main() {
     }
     for (int i = strlen(userInput)-1; i >= 0 ; i--) {
         noOfFoodTypes = noOfFoodTypes*10 + (userInput[i]- '0');
-    }
+    }*/
+    noOfFoodTypes = getNrOfTypes(userInput);
     char *username = (char*)malloc(CHAR_LENGTH* sizeof(char));
     char *password = (char*)malloc(CHAR_LENGTH* sizeof(char));;
     char **foodTypes = (char**)malloc(noOfFoodTypes* sizeof(char*));
@@ -99,15 +114,7 @@ int main() {
     }
     ///DRINKS    
     gets(userInput);
-    for (unsigned int i = 0; i < strlen(userInput); ++i) {
-        if (!isdigit(userInput[i])) {
-            userInput[i] = '\0';
-            break;
-        }
-    }
-    for (int i = strlen(userInput)-1; i >= 0 ; i--) {
-        noOfDrinks = noOfDrinks*10 + (userInput[i]- '0');
-    }
+    noOfDrinks = getNrOfTypes(userInput);
     char **drinkOptions = (char**)malloc(noOfDrinks* sizeof(char*));
     /*drinkOptions[0] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[0], "Coca-cola");
     drinkOptions[1] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[1], "fanta");
@@ -133,7 +140,6 @@ int main() {
 
         free(object);
     }
-
 
     char **cutleryOptions = (char**)malloc(2* sizeof(char));
     cutleryOptions[0] = (char*)malloc(4* sizeof(char)); strcpy(cutleryOptions[0], "Yes");
