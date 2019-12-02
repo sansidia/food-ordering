@@ -57,22 +57,28 @@ int main() {
     for (int currentType = 0; currentType < noOfFoodTypes; ++currentType) {
         gets(userInput);
         noFoodSubtypes[currentType] = 0;
-        ///COUNT FOOD SUBTYPES
+        char* auxString = (char*) malloc(strlen(userInput)* sizeof(char));
+        /*///COUNT FOOD SUBTYPES
         for (int j = 0; j < strlen(userInput); ++j) {
             if (userInput[j] == '(') noFoodSubtypes[currentType]++;
-        }
+        }*/
         ///ASSIGN MEMORY
         foodTypes[currentType] = (char*)malloc(CHAR_LENGTH * sizeof(char));
+
+        strcpy(foodTypes[currentType], strtok(userInput, " "));
+        strcpy(auxString, strtok(NULL, ""));
+        char* nrChar = (char*)malloc(5* sizeof(char));
+        char* pt;
+        strcpy(nrChar, strtok(auxString, ":"));
+        strcpy(auxString, strtok(NULL, ""));
+        noFoodSubtypes[currentType] = strtol(nrChar, &pt, 10);
+
         foodSubtypePrices[currentType] = (double*)malloc(noFoodSubtypes[currentType] * sizeof(double));
         foodSubtypes[currentType] = (char**) malloc(noFoodSubtypes[currentType] * sizeof(char*));
         for (int j = 0; j < noFoodSubtypes[currentType]; ++j) {
             foodSubtypes[currentType][j] = (char*) malloc(CHAR_LENGTH * sizeof(char));
         }
         ///PARSE INPUT
-        char* auxString = (char*) malloc(strlen(userInput)* sizeof(char));
-
-        strcpy(foodTypes[currentType], strtok(userInput, ": "));
-        strcpy(auxString, strtok(NULL, ""));
         for (int currentSubtype = 0; currentSubtype < noFoodSubtypes[currentType]; ++currentSubtype) {
             char* object = (char*) malloc(2* CHAR_LENGTH* sizeof(char));
             strcpy(object, strtok(auxString, ")"));
@@ -107,9 +113,8 @@ int main() {
     drinkOptions[2] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[2], "lipton");
     drinkOptions[3] = (char*)malloc(CHAR_LENGTH* sizeof(char)); strcpy(drinkOptions[3], "Water");//[NO_DRINKS][CHAR_LENGTH] = {"Coca-Cola", "Fanta", "Lipton", "Water"};*/
     double* drinkOptionPrices = (double*)malloc(noOfDrinks* sizeof(double)); //drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
-
+    gets(userInput);
     for(int currentType=0;currentType<noOfDrinks;++currentType) {
-        gets(userInput);
         drinkOptions[currentType] = (char*) malloc(CHAR_LENGTH* sizeof(char));
 
         ///PARSE

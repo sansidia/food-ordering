@@ -20,13 +20,13 @@ void signIn(char *username, char *password) {
 
 void printForm(char* username, char* food, double foodPrice, char* drink, double drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
     printFormHeader(username);
-    printf("--%s: %f\n", food, foodPrice);
+    printf("--%s: %.2f\n", food, foodPrice);
     if (drinkCode != noDrink) {
-        printf("--%s: %f\n", drink, drinkPrice);
+        printf("--%s: %.2f\n", drink, drinkPrice);
     }
     printf("Cutlery: %s\n", (cutleryChoice == 1? "no":"yes"));
     printf("Additional information: %s\n", additionalInfo);
-    printf("Payment amount: %f\n", paymentSum(foodPrice, drinkPrice, drinkCode, noDrink));
+    printf("Payment amount: %.2f\n", paymentSum(foodPrice, drinkPrice, drinkCode, noDrink));
     printf("-----------------\n");
 }
 
