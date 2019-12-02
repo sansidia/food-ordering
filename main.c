@@ -12,6 +12,7 @@
 #define CHAR_LENGTH 20
 
 int main() {
+    //region LOADING DATA
     printf(LOAD_DATA);
     int noOfFoodTypes, noOfDrinks;
 
@@ -94,7 +95,30 @@ int main() {
     int state = 0, isOrderConfirmed = 0;
     //endregion
 
-    //region Ordering Interaction
+    //endregion
+
+    //region WRITING DATA TO FILE
+
+    FILE *outputFile = fopen("data.txt", "w");
+
+    fprintf(outputFile, "%d:\n", noOfFoodTypes);
+    for (int currentFoodType = 0; currentFoodType < noOfFoodTypes; ++currentFoodType) {
+        fprintf(outputFile, "%s %d:", foodTypes[currentFoodType], noFoodSubtypes[currentFoodType]);
+        for (int currentSubType = 0; currentSubType < noFoodSubtypes[currentFoodType]; ++currentSubType) {
+            fprintf(outputFile, " (%s - %.2f)", foodSubtypes[currentFoodType][currentSubType], foodSubtypePrices[currentFoodType][currentSubType]);
+        }
+        fprintf(outputFile, "\n");
+    }
+    fprintf(outputFile, "%d:\n", noOfDrinks);
+    for (int currentDrink = 0; currentDrink < noOfDrinks-1; ++currentDrink) {
+        fprintf(outputFile, "(%s - %.2f), ", drinkOptions[currentDrink], drinkOptionPrices[currentDrink]);
+    }
+    fprintf(outputFile, "(%s - %.2f)", drinkOptions[noOfDrinks-1], drinkOptionPrices[noOfDrinks-1]);
+
+    fclose(outputFile);
+    //endregion
+
+    //region ORDERING INTERACTION
     while (isOrderConfirmed == 0) {
         switch (state) {
             case 0: //read user data
