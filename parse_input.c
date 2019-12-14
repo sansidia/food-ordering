@@ -28,7 +28,7 @@ void cleanExtraChars(char *string, char *chars) {
     string[strlen(string) - extraChars] = '\0';
 }
 
-int getNrOfTypes(char* input) {
+/*int getNrOfTypes(char* input) {
     int number = 0;
     for (unsigned int i = 0; i < strlen(input); ++i) {
         if (!isdigit(input[i])) {
@@ -40,9 +40,9 @@ int getNrOfTypes(char* input) {
         number = number*10 + (input[i]- '0');
     }
     return number;
-}
+}*/
 
-int parseNrOfTypes(char* input) {
+/*int parseNrOfTypes(char* input) {
     int number;
     char* nrChar = (char*) malloc(5* sizeof(char));
     char* pt;
@@ -51,16 +51,16 @@ int parseNrOfTypes(char* input) {
     number = strtol(nrChar, &pt, 10);
     free(nrChar);
     return number;
-}
+}*/
 
 void parseTypeName(char* input, char* destinationType) {
-    strcpy(destinationType, strtok(input, " "));
+    strcpy(destinationType, strtok(input, " :"));
     strcpy(input, strtok(NULL, ""));
 }
 
 void getCurrentObject(char* input, char* object, int currentValue, int invalidateValue) {
     strcpy(object, strtok(input, ")"));
-    cleanExtraChars(object, " ,");
+    cleanExtraChars(object, "( ,");
     if (currentValue != invalidateValue) strcpy(input, strtok(NULL, ""));
 }
 

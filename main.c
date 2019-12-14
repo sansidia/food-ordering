@@ -10,114 +10,231 @@
 #define UNINITIALIZED_VALUE -1
 #define LOAD_DATA "Please load the data\n"
 #define CHAR_LENGTH 20
+#define FILE_PATH "../data.txt"
 
 int main() {
-    //region LOADING DATA
-    printf(LOAD_DATA);
-    int noOfFoodTypes, noOfDrinks;
-
-    //region FOODS
-
-    //region Define & alloc: userInput
-    char *userInput = (char *) malloc(8 * CHAR_LENGTH * sizeof(char));
-    //endregion
-
-    gets(userInput);
-    noOfFoodTypes = getNrOfTypes(userInput);
-
-    //region Define & alloc: username, password, foodTypes, foodTypeChoice, foodSubtypeChoice, drinkChoice, cutleryChoice, choice, noFoodSubtypes, foodSubtypePrices, foodSubtypes
-    char *username = (char *) malloc(CHAR_LENGTH * sizeof(char));
-    char *password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
-    char **foodTypes = (char **) malloc(noOfFoodTypes * sizeof(char *));
-    int foodTypeChoice = UNINITIALIZED_VALUE;
-    int foodSubtypeChoice = UNINITIALIZED_VALUE;
-    int drinkChoice = UNINITIALIZED_VALUE;
-    int cutleryChoice = UNINITIALIZED_VALUE;
+    //region variable definition
+    char *userInput;
+    char *username;
+    char *password;
+    char **foodTypes;
+    int foodTypeChoice;
+    int foodSubtypeChoice;
+    int drinkChoice;
+    int cutleryChoice;
     int choice;
-    int *noFoodSubtypes = (int *) malloc(noOfFoodTypes * sizeof(int));
-    double **foodSubtypePrices = (double **) malloc(noOfFoodTypes * sizeof(double *));
-    char ***foodSubtypes = (char ***) malloc(noOfFoodTypes * sizeof(char *));
-    //endregion
-
-    for (int currentType = 0; currentType < noOfFoodTypes; ++currentType) {
-        gets(userInput);
-
-        //region Define & alloc: foodTypes[currentType]
-        foodTypes[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
-        //endregion
-
-        parseTypeName(userInput, foodTypes[currentType]);
-        noFoodSubtypes[currentType] = parseNrOfTypes(userInput);
-
-        //region Define & alloc: foodSubtypePrices[currentType], foodSubtypes[currentType], foodSubtypes[currentType][j]
-        foodSubtypePrices[currentType] = (double *) malloc(noFoodSubtypes[currentType] * sizeof(double));
-        foodSubtypes[currentType] = (char **) malloc(noFoodSubtypes[currentType] * sizeof(char *));
-        for (int j = 0; j < noFoodSubtypes[currentType]; ++j) {
-            foodSubtypes[currentType][j] = (char *) malloc(CHAR_LENGTH * sizeof(char));
-        }
-        //endregion
-
-        for (int currentSubtype = 0; currentSubtype < noFoodSubtypes[currentType]; ++currentSubtype)
-            parseObject(userInput, foodSubtypes[currentType][currentSubtype],
-                        &foodSubtypePrices[currentType][currentSubtype], currentSubtype,
-                        noFoodSubtypes[currentType] - 1);
-    }
-    //endregion
-
-    //region DRINKS
-
-    gets(userInput);
-    noOfDrinks = getNrOfTypes(userInput);
-
-    //region Define & alloc: drinkOptions, drinkOptionsPrices
-    char **drinkOptions = (char **) malloc(noOfDrinks * sizeof(char *));
-    double *drinkOptionPrices = (double *) malloc(noOfDrinks *
-                                                  sizeof(double)); //drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
-    //endregion
-
-    gets(userInput);
-    for (int currentType = 0; currentType < noOfDrinks; ++currentType) {
-        //region Define & alloc: drinkOptions[currentType]
-        drinkOptions[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
-        //endregion
-
-        parseObject(userInput, drinkOptions[currentType], &drinkOptionPrices[currentType], currentType, noOfDrinks - 1);
-    }
-    //endregion
-
-    //region Define & alloc: cutleryOptions, cutleryOptions[1/0], additionalInfo, state, isOrderConfirmed
-    char **cutleryOptions = (char **) malloc(2 * sizeof(char));
-    cutleryOptions[0] = (char *) malloc(4 * sizeof(char));
-    strcpy(cutleryOptions[0], "Yes");
-    cutleryOptions[1] = (char *) malloc(3 * sizeof(char));
-    strcpy(cutleryOptions[1], "No");
-    char *additionalInfo = (char *) malloc(LONG_INPUT * sizeof(char));
+    int *noFoodSubtypes;
+    double **foodSubtypePrices;
+    char ***foodSubtypes;
+    char **drinkOptions;
+    double *drinkOptionPrices;
+    char **cutleryOptions;
+    char *additionalInfo;
     int state = 0, isOrderConfirmed = 0;
+    int noOfFoodTypes, noOfDrinks;
     //endregion
 
-    //endregion
+    FILE *foodDataFile = fopen(FILE_PATH, "r");
+    if (foodDataFile == NULL) {
+        perror("File could not be opened");
 
-    //region WRITING DATA TO FILE
+        //region LOADING DATA
+        printf(LOAD_DATA);
 
-    FILE *outputFile = fopen("data.txt", "w");
+        //region FOODS
 
-    fprintf(outputFile, "%d:\n", noOfFoodTypes);
-    for (int currentFoodType = 0; currentFoodType < noOfFoodTypes; ++currentFoodType) {
-        fprintf(outputFile, "%s %d:", foodTypes[currentFoodType], noFoodSubtypes[currentFoodType]);
-        for (int currentSubType = 0; currentSubType < noFoodSubtypes[currentFoodType]; ++currentSubType) {
-            fprintf(outputFile, " (%s - %.2f)", foodSubtypes[currentFoodType][currentSubType], foodSubtypePrices[currentFoodType][currentSubType]);
+        //region Define & alloc: userInput
+        userInput = (char *) malloc(8 * CHAR_LENGTH * sizeof(char));
+        //endregion
+
+        scanf("%d", &noOfFoodTypes);
+        getchar();
+
+        //region Define & alloc: username, password, foodTypes, foodTypeChoice, foodSubtypeChoice, drinkChoice, cutleryChoice, choice, noFoodSubtypes, foodSubtypePrices, foodSubtypes
+
+        username = (char *) malloc(CHAR_LENGTH * sizeof(char));
+        password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
+        foodTypes = (char **) malloc(noOfFoodTypes * sizeof(char *));
+        foodTypeChoice = UNINITIALIZED_VALUE;
+        foodSubtypeChoice = UNINITIALIZED_VALUE;
+        drinkChoice = UNINITIALIZED_VALUE;
+        cutleryChoice = UNINITIALIZED_VALUE;
+        noFoodSubtypes = (int *) malloc(noOfFoodTypes * sizeof(int));
+        foodSubtypePrices = (double **) malloc(noOfFoodTypes * sizeof(double *));
+        foodSubtypes = (char ***) malloc(noOfFoodTypes * sizeof(char *));
+        //endregion
+
+        for (int currentType = 0; currentType < noOfFoodTypes; ++currentType) {
+            gets(userInput);
+
+            //region Define & alloc: foodTypes[currentType]
+            foodTypes[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            //endregion
+
+            parseTypeName(userInput, foodTypes[currentType]);
+            noFoodSubtypes[currentType] = atoi(userInput);
+
+            gets(userInput);
+
+            //region Define & alloc: foodSubtypePrices[currentType], foodSubtypes[currentType], foodSubtypes[currentType][j]
+            foodSubtypePrices[currentType] = (double *) malloc(noFoodSubtypes[currentType] * sizeof(double));
+            foodSubtypes[currentType] = (char **) malloc(noFoodSubtypes[currentType] * sizeof(char *));
+            for (int j = 0; j < noFoodSubtypes[currentType]; ++j) {
+                foodSubtypes[currentType][j] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            }
+            //endregion
+
+            for (int currentSubtype = 0; currentSubtype < noFoodSubtypes[currentType]; ++currentSubtype)
+                parseObject(userInput, foodSubtypes[currentType][currentSubtype],
+                            &foodSubtypePrices[currentType][currentSubtype], currentSubtype,
+                            noFoodSubtypes[currentType] - 1);
         }
-        fprintf(outputFile, "\n");
-    }
-    fprintf(outputFile, "%d:\n", noOfDrinks);
-    for (int currentDrink = 0; currentDrink < noOfDrinks-1; ++currentDrink) {
-        fprintf(outputFile, "(%s - %.2f), ", drinkOptions[currentDrink], drinkOptionPrices[currentDrink]);
-    }
-    fprintf(outputFile, "(%s - %.2f)", drinkOptions[noOfDrinks-1], drinkOptionPrices[noOfDrinks-1]);
+        //endregion
 
-    fclose(outputFile);
-    //endregion
+        //region DRINKS
 
+        scanf("%d", &noOfDrinks);
+        getchar();
+
+        //region Define & alloc: drinkOptions, drinkOptionsPrices
+        drinkOptions = (char **) malloc(noOfDrinks * sizeof(char *));
+        drinkOptionPrices = (double *) malloc(noOfDrinks *
+                                              sizeof(double)); //drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
+        //endregion
+
+        gets(userInput);
+        for (int currentType = 0; currentType < noOfDrinks; ++currentType) {
+            //region Define & alloc: drinkOptions[currentType]
+            drinkOptions[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            //endregion
+
+            parseObject(userInput, drinkOptions[currentType], &drinkOptionPrices[currentType], currentType,
+                        noOfDrinks - 1);
+        }
+        //endregion
+
+        //region Define & alloc: cutleryOptions, cutleryOptions[1/0], additionalInfo, state, isOrderConfirmed
+        cutleryOptions = (char **) malloc(2 * sizeof(char));
+        cutleryOptions[0] = (char *) malloc(4 * sizeof(char));
+        strcpy(cutleryOptions[0], "Yes");
+        cutleryOptions[1] = (char *) malloc(3 * sizeof(char));
+        strcpy(cutleryOptions[1], "No");
+        additionalInfo = (char *) malloc(LONG_INPUT * sizeof(char));
+        //endregion
+
+        //endregion
+
+        //region WRITING DATA TO FILE
+
+        FILE *outputFile = fopen("data.txt", "w");
+
+        fprintf(outputFile, "%d:\n", noOfFoodTypes);
+        for (int currentFoodType = 0; currentFoodType < noOfFoodTypes; ++currentFoodType) {
+            fprintf(outputFile, "%s %d:", foodTypes[currentFoodType], noFoodSubtypes[currentFoodType]);
+            for (int currentSubType = 0; currentSubType < noFoodSubtypes[currentFoodType]; ++currentSubType) {
+                fprintf(outputFile, " (%s - %.2f)", foodSubtypes[currentFoodType][currentSubType],
+                        foodSubtypePrices[currentFoodType][currentSubType]);
+            }
+            fprintf(outputFile, "\n");
+        }
+        fprintf(outputFile, "%d:\n", noOfDrinks);
+        for (int currentDrink = 0; currentDrink < noOfDrinks - 1; ++currentDrink) {
+            fprintf(outputFile, "(%s - %.2f), ", drinkOptions[currentDrink], drinkOptionPrices[currentDrink]);
+        }
+        fprintf(outputFile, "(%s - %.2f)", drinkOptions[noOfDrinks - 1], drinkOptionPrices[noOfDrinks - 1]);
+
+        fclose(outputFile);
+        //endregion
+    } else {
+        //region LOADING DATA
+        //printf(LOAD_DATA);
+
+        //region FOODS
+
+        //region Define & alloc: userInput
+        userInput = (char *) malloc(8 * CHAR_LENGTH * sizeof(char));
+        //endregion
+
+        fscanf(foodDataFile, "%d", &noOfFoodTypes);
+        fgetc(foodDataFile);
+        //region Define & alloc: username, password, foodTypes, foodTypeChoice, foodSubtypeChoice, drinkChoice, cutleryChoice, choice, noFoodSubtypes, foodSubtypePrices, foodSubtypes
+        username = (char *) malloc(CHAR_LENGTH * sizeof(char));
+        password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
+        foodTypes = (char **) malloc(noOfFoodTypes * sizeof(char *));
+        foodTypeChoice = UNINITIALIZED_VALUE;
+        foodSubtypeChoice = UNINITIALIZED_VALUE;
+        drinkChoice = UNINITIALIZED_VALUE;
+        cutleryChoice = UNINITIALIZED_VALUE;
+        noFoodSubtypes = (int *) malloc(noOfFoodTypes * sizeof(int));
+        foodSubtypePrices = (double **) malloc(noOfFoodTypes * sizeof(double *));
+        foodSubtypes = (char ***) malloc(noOfFoodTypes * sizeof(char *));
+        //endregion
+
+        for (int currentType = 0; currentType < noOfFoodTypes; ++currentType) {
+            fgets(userInput, LONG_INPUT, foodDataFile);
+            userInput[strlen(userInput)-1] = '\0';
+
+            //region Define & alloc: foodTypes[currentType]
+            foodTypes[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            //endregion
+
+            parseTypeName(userInput, foodTypes[currentType]);
+            noFoodSubtypes[currentType] = atoi(userInput);
+
+            //region Define & alloc: foodSubtypePrices[currentType], foodSubtypes[currentType], foodSubtypes[currentType][j]
+            foodSubtypePrices[currentType] = (double *) malloc(noFoodSubtypes[currentType] * sizeof(double));
+            foodSubtypes[currentType] = (char **) malloc(noFoodSubtypes[currentType] * sizeof(char *));
+            for (int j = 0; j < noFoodSubtypes[currentType]; ++j) {
+                foodSubtypes[currentType][j] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            }
+            //endregion
+
+            fgets(userInput, LONG_INPUT, foodDataFile);
+            userInput[strlen(userInput)-1] = '\0';
+
+            for (int currentSubtype = 0; currentSubtype < noFoodSubtypes[currentType]; ++currentSubtype)
+                parseObject(userInput, foodSubtypes[currentType][currentSubtype],
+                            &foodSubtypePrices[currentType][currentSubtype], currentSubtype,
+                            noFoodSubtypes[currentType] - 1);
+        }
+        //endregion
+
+        //region DRINKS
+
+        fgets(userInput, LONG_INPUT, foodDataFile);
+        userInput[strlen(userInput)-1] = '\0';
+
+        noOfDrinks = atoi(userInput);
+
+        //region Define & alloc: drinkOptions, drinkOptionsPrices
+        drinkOptions = (char **) malloc(noOfDrinks * sizeof(char *));
+        drinkOptionPrices = (double *) malloc(noOfDrinks *
+                                              sizeof(double)); //drinkOptionPrices[0] = 5; drinkOptionPrices[1] = 5; drinkOptionPrices[2] = 5; drinkOptionPrices[3] = 4; //[NO_DRINKS] = {5, 5, 5, 4};
+        //endregion
+
+        fgets(userInput, LONG_INPUT, foodDataFile);
+        userInput[strlen(userInput)-1] = '\0';
+        for (int currentType = 0; currentType < noOfDrinks; ++currentType) {
+            //region Define & alloc: drinkOptions[currentType]
+            drinkOptions[currentType] = (char *) malloc(CHAR_LENGTH * sizeof(char));
+            //endregion
+
+            parseObject(userInput, drinkOptions[currentType], &drinkOptionPrices[currentType], currentType,
+                        noOfDrinks - 1);
+        }
+        //endregion
+
+        //region Define & alloc: cutleryOptions, cutleryOptions[1/0], additionalInfo, state, isOrderConfirmed
+        cutleryOptions = (char **) malloc(2 * sizeof(char));
+        cutleryOptions[0] = (char *) malloc(4 * sizeof(char));
+        strcpy(cutleryOptions[0], "Yes");
+        cutleryOptions[1] = (char *) malloc(3 * sizeof(char));
+        strcpy(cutleryOptions[1], "No");
+        additionalInfo = (char *) malloc(LONG_INPUT * sizeof(char));
+        //endregion
+
+        //endregion
+    }
     //region ORDERING INTERACTION
     while (isOrderConfirmed == 0) {
         switch (state) {
