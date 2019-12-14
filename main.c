@@ -10,7 +10,7 @@
 #define UNINITIALIZED_VALUE -1
 #define LOAD_DATA "Please load the data\n"
 #define CHAR_LENGTH 20
-#define FILE_PATH "../data.txt"
+#define FILE_PATH "data.txt"
 
 int main() {
     //region variable definition
@@ -126,22 +126,21 @@ int main() {
 
         //region WRITING DATA TO FILE
 
-        FILE *outputFile = fopen("data.txt", "w");
+        FILE *outputFile = fopen(FILE_PATH, "w");
 
-        fprintf(outputFile, "%d:\n", noOfFoodTypes);
+        fprintf(outputFile, "%d\n", noOfFoodTypes);
         for (int currentFoodType = 0; currentFoodType < noOfFoodTypes; ++currentFoodType) {
-            fprintf(outputFile, "%s %d:", foodTypes[currentFoodType], noFoodSubtypes[currentFoodType]);
+            fprintf(outputFile, "%s:%d\n", foodTypes[currentFoodType], noFoodSubtypes[currentFoodType]);
             for (int currentSubType = 0; currentSubType < noFoodSubtypes[currentFoodType]; ++currentSubType) {
-                fprintf(outputFile, " (%s - %.2f)", foodSubtypes[currentFoodType][currentSubType],
+                fprintf(outputFile, "(%s-%.2f) ", foodSubtypes[currentFoodType][currentSubType],
                         foodSubtypePrices[currentFoodType][currentSubType]);
             }
             fprintf(outputFile, "\n");
         }
-        fprintf(outputFile, "%d:\n", noOfDrinks);
-        for (int currentDrink = 0; currentDrink < noOfDrinks - 1; ++currentDrink) {
-            fprintf(outputFile, "(%s - %.2f), ", drinkOptions[currentDrink], drinkOptionPrices[currentDrink]);
+        fprintf(outputFile, "%d\n", noOfDrinks);
+        for (int currentDrink = 0; currentDrink < noOfDrinks; ++currentDrink) {
+            fprintf(outputFile, "(%s-%.2f) ", drinkOptions[currentDrink], drinkOptionPrices[currentDrink]);
         }
-        fprintf(outputFile, "(%s - %.2f)", drinkOptions[noOfDrinks - 1], drinkOptionPrices[noOfDrinks - 1]);
 
         fclose(outputFile);
         //endregion
