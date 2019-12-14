@@ -5,18 +5,36 @@
 #include "userdata.h"
 #include "options.h"
 #include "parse_input.h"
+#include "struct_type.h"
 
 #define LONG_INPUT 100
 #define UNINITIALIZED_VALUE -1
 #define LOAD_DATA "Please load the data\n"
 #define CHAR_LENGTH 20
 #define FILE_PATH "data.txt"
+#define NR_OF_USERS 30
+
+
+
 
 int main() {
     //region variable definition
     char *userInput;
-    char *username;
-    char *password;
+    int nrOfUsers = 1;
+    struct user currentUser;
+    struct user *registeredUsers;
+    registeredUsers = (struct user*)malloc(NR_OF_USERS* sizeof(struct user));
+    for (int l = 0; l < NR_OF_USERS; ++l) {
+        registeredUsers[l].password = (char*)malloc(CHAR_LENGTH* sizeof(char));
+        registeredUsers[l].username = (char*)malloc(CHAR_LENGTH* sizeof(char));
+    }
+
+    struct user admin;
+    admin.password = (char*)malloc(strlen("admin")* sizeof(char));
+    admin.username = (char*)malloc(strlen("admin")* sizeof(char));
+    strcpy(admin.username, "admin");
+    strcpy(admin.password, "admin");
+    registeredUsers[0] = admin;
     char **foodTypes;
     int foodTypeChoice;
     int foodSubtypeChoice;
@@ -38,7 +56,7 @@ int main() {
     if (foodDataFile == NULL) {
         perror("File could not be opened");
 
-        //region LOADING DATA
+        //region LOADING DATA FROM CONSOLE
         printf(LOAD_DATA);
 
         //region FOODS
@@ -52,8 +70,8 @@ int main() {
 
         //region Define & alloc: username, password, foodTypes, foodTypeChoice, foodSubtypeChoice, drinkChoice, cutleryChoice, choice, noFoodSubtypes, foodSubtypePrices, foodSubtypes
 
-        username = (char *) malloc(CHAR_LENGTH * sizeof(char));
-        password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
+        currentUser.username = (char *) malloc(CHAR_LENGTH * sizeof(char));
+        currentUser.password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
         foodTypes = (char **) malloc(noOfFoodTypes * sizeof(char *));
         foodTypeChoice = UNINITIALIZED_VALUE;
         foodSubtypeChoice = UNINITIALIZED_VALUE;
@@ -145,7 +163,7 @@ int main() {
         fclose(outputFile);
         //endregion
     } else {
-        //region LOADING DATA
+        //region LOADING DATA FROM FILE
         //printf(LOAD_DATA);
 
         //region FOODS
@@ -157,8 +175,8 @@ int main() {
         fscanf(foodDataFile, "%d", &noOfFoodTypes);
         fgetc(foodDataFile);
         //region Define & alloc: username, password, foodTypes, foodTypeChoice, foodSubtypeChoice, drinkChoice, cutleryChoice, choice, noFoodSubtypes, foodSubtypePrices, foodSubtypes
-        username = (char *) malloc(CHAR_LENGTH * sizeof(char));
-        password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
+        currentUser.username = (char *) malloc(CHAR_LENGTH * sizeof(char));
+        currentUser.password = (char *) malloc(CHAR_LENGTH * sizeof(char));;
         foodTypes = (char **) malloc(noOfFoodTypes * sizeof(char *));
         foodTypeChoice = UNINITIALIZED_VALUE;
         foodSubtypeChoice = UNINITIALIZED_VALUE;
@@ -238,7 +256,7 @@ int main() {
     while (isOrderConfirmed == 0) {
         switch (state) {
             case 0: //read user data
-                signIn(username, password);
+                signInOrUp(currentUser, registeredUsers, &nrOfUsers);
                 state++;
                 break;
             case 1: //food type selection
@@ -266,13 +284,13 @@ int main() {
                 getAdditionalInfo(&state, additionalInfo);
                 break;
             case 6: //confirmation
-                printForm(username, foodSubtypes[foodTypeChoice][foodSubtypeChoice],
+                printForm(currentUser.username, foodSubtypes[foodTypeChoice][foodSubtypeChoice],
                           foodSubtypePrices[foodTypeChoice][foodSubtypeChoice], drinkOptions[drinkChoice],
                           drinkOptionPrices[drinkChoice], drinkChoice, noOfDrinks, cutleryChoice, additionalInfo);
                 printf("a) Confirm order\n" "b) Go back\n");
                 choice = makeChoice(&state, 1, 2);
                 if (choice == 0) {
-                    printf("Order confirmed! Thank you for buying from us, %s!", username);
+                    printf("Order confirmed! Thank you for buying from us, %s!", currentUser.username);
                     isOrderConfirmed = 1;
                 }
                 break;
@@ -299,8 +317,13 @@ int main() {
     free(noFoodSubtypes);
     for (int i = 0; i < noOfFoodTypes; ++i) free(foodTypes[i]);
     free(foodTypes);
-    free(password);
-    free(username);
+    for (int k = 0; k < nrOfUsers; ++k) {
+        free(registeredUsers[k].password);
+        free(registeredUsers[k].username);
+    }
+    free(registeredUsers);
+    free(currentUser.password);
+    free(currentUser.username);
     free(userInput);
     //endregion
     return 0;

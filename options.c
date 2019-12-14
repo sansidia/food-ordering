@@ -41,7 +41,7 @@ int makeChoice(int *state, int nrOfTypes, int stateModifier) {
 
 int isChoiceValid(int choice, int nrOfTypes) {
     if ((choice < 0) || (choice > nrOfTypes)) {
-        printf("Invalid answer, please select again.\n");
+        printf(INVALID_INPUT);
         return 0;
     }
     return 1;
