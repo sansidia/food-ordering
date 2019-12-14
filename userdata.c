@@ -4,18 +4,81 @@
 
 #include "userdata.h"
 #include <stdio.h>
+#include "options.h"
+#include "struct_type.h"
+#include <string.h>
 
 void printFormHeader(char*);
-
 double paymentSum(double foodPrice, double drinkPrice, int drinkCode, int noDrink);
+int doesPasswordExist(char*username, struct user *registeredUsers, int nrOfUsers);
+int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUsers);
 
-void signIn(char *username, char *password) {
+int signIn(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
+    int signInComplete = 0;
+    getchar();
+    while (signInComplete == 0) {
+        printf(SIGNING_IN);
+        printf("---Username:\n");
+        gets(mUser.username);
+        printf("---Password:\n");
+        gets(mUser.password);
+        if (doesUsernameExist(mUser.username, registeredUsers, nrOfUsers) == 0) {
+            printf(USER_NOT_FOUND);
+            return 0;
+        } else if (doesPasswordExist(mUser.password, registeredUsers, nrOfUsers) == 0) {
+            printf(INCORRECT_PASSWORD);
+        } else {
+            return 1;
+        }
+    }
+}
+
+
+int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUsers) {
+    for (int i = 0; i < nrOfUsers; ++i) {
+        if (strcmp(username, registeredUsers[i].username) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+int doesPasswordExist(char *username, struct user *registeredUsers, int nrOfUsers) {
+    for (int i = 0; i < nrOfUsers; ++i) {
+        if (strcmp(username, registeredUsers[i].username) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+int signUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
+
+}
+
+void signInOrUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
     printf("Welcome to Food Thingies!\n");
-    printf("Please sign in to continue!\n");
-    printf("---Username:\n");
-    gets(username);
-    printf("---Password:\n");
-    gets(password);
+    int signComplete = 0;
+    while (signComplete == 0) {
+        printf(SIGN_IN_UP);
+        printf("a) Sign in\n");
+        printf("b) Sign up\n");
+        char i;
+        i = getchar();
+        int choice = i - 'a';
+        switch (choice) {
+            case 0: {
+                signComplete = signIn(mUser, registeredUsers, nrOfUsers);
+                break;
+            }
+            case 1: {
+                signComplete = signUp(mUser, registeredUsers, nrOfUsers);
+                break;
+            }
+            default: {
+                printf(INVALID_INPUT);
+                break;
+            }
+        }
+    }
 }
 
 void printForm(char* username, char* food, double foodPrice, char* drink, double drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char *additionalInfo) {
@@ -44,4 +107,6 @@ double paymentSum(double foodPrice, double drinkPrice, int drinkCode, int noDrin
     else sum=foodPrice;
     return sum;
 }
+
+
 
