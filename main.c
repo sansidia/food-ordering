@@ -12,6 +12,7 @@
 #define LOAD_DATA "Please load the data\n"
 #define CHAR_LENGTH 20
 #define FILE_PATH "data.txt"
+#define NR_OF_USERS 30
 
 
 
@@ -22,9 +23,12 @@ int main() {
     int nrOfUsers = 1;
     struct user currentUser;
     struct user *registeredUsers;
-    registeredUsers = (struct user*)malloc(nrOfUsers* sizeof(struct user));
-    registeredUsers[0].password =
-    registeredUsers[0].username = (char*)malloc(CHAR_LENGTH* sizeof(char));
+    registeredUsers = (struct user*)malloc(NR_OF_USERS* sizeof(struct user));
+    for (int l = 0; l < NR_OF_USERS; ++l) {
+        registeredUsers[l].password = (char*)malloc(CHAR_LENGTH* sizeof(char));
+        registeredUsers[l].username = (char*)malloc(CHAR_LENGTH* sizeof(char));
+    }
+
     struct user admin;
     admin.password = (char*)malloc(strlen("admin")* sizeof(char));
     admin.username = (char*)malloc(strlen("admin")* sizeof(char));
@@ -252,7 +256,7 @@ int main() {
     while (isOrderConfirmed == 0) {
         switch (state) {
             case 0: //read user data
-                signInOrUp(currentUser, registeredUsers, nrOfUsers);
+                signInOrUp(currentUser, registeredUsers, &nrOfUsers);
                 state++;
                 break;
             case 1: //food type selection

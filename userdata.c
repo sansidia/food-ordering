@@ -46,7 +46,7 @@ int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUser
 
 int doesPasswordExist(char *username, struct user *registeredUsers, int nrOfUsers) {
     for (int i = 0; i < nrOfUsers; ++i) {
-        if (strcmp(username, registeredUsers[i].username) == 0)
+        if (strcmp(username, registeredUsers[i].password) == 0)
             return 1;
     }
     return 0;
@@ -70,7 +70,7 @@ int validatePassword (struct user user) {
     return 0;
 }
 
-int signUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
+int signUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers) {
     setbuf(stdout, 0);
     int signUpComplete = 0;
     getchar();
@@ -80,9 +80,12 @@ int signUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
         gets(mUser.username);
         printf("---Password:\n");
         gets(mUser.password);
-        if (doesUsernameExist(mUser.username, registeredUsers, nrOfUsers)) {
+        if (doesUsernameExist(mUser.username, registeredUsers, *nrOfUsers)) {
             printf(DUPLICATE_USER);
         } else if (validatePassword(mUser) == 0){
+            (*nrOfUsers) ++;
+            registeredUsers[(*nrOfUsers)-1] = mUser;
+            printf("Registered user %s, password %s\n", registeredUsers[(*nrOfUsers)-1].username, registeredUsers[(*nrOfUsers)-1].password);
             return 1;
         } else {
             switch (validatePassword(mUser)) {
@@ -111,7 +114,7 @@ int signUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
     }
 }
 
-void signInOrUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
+void signInOrUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers) {
     setbuf(stdout, 0);
     printf("Welcome to Food Thingies!\n");
     int signComplete = 0;
@@ -124,7 +127,7 @@ void signInOrUp(struct user mUser, struct user *registeredUsers, int nrOfUsers) 
         int choice = i - 'a';
         switch (choice) {
             case 0: {
-                signComplete = signIn(mUser, registeredUsers, nrOfUsers);
+                signComplete = signIn(mUser, registeredUsers, *nrOfUsers);
                 break;
             }
             case 1: {

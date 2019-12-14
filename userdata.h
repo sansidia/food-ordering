@@ -20,7 +20,7 @@
 #define DUPLICATE_USER "Please choose another username!\n"
 #define INCORRECT_PASSWORD "Incorrect password\n"
 
-void signInOrUp(struct user mUser, struct user *registeredUsers, int nrOfUsers);
+void signInOrUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers);
 void printForm(char* username, char* food, double foodPrice, char* drink, double drinkPrice, int drinkCode, int noDrink, int cutleryChoice, char* additionalInfo);
 
 #endif //FOOD_ORDERING_USERDATA_H
