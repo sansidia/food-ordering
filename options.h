@@ -5,8 +5,10 @@
 #ifndef FOOD_ORDERING_OPTIONS_H
 #define FOOD_ORDERING_OPTIONS_H
 
-void printMenu(int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize]);
-void printMenuWithPrices(int id, int nrOfTypes, int stringSize, char types[nrOfTypes][stringSize], int prices[]);
+#define INVALID_INPUT "Invalid answer, please select again.\n"
+
+void printMenu(int nrOfTypes, char **types);
+void printMenuWithPrices(int id, int nrOfTypes, char **types, double *prices);
 int makeChoice(int *state, int nrOfTypes, int stateModifier);
 void getAdditionalInfo(int *state, char additionalInfo[]);
 
