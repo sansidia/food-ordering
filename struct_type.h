@@ -5,9 +5,9 @@
 #ifndef FOOD_ORDERING_STRUCT_TYPE_H
 #define FOOD_ORDERING_STRUCT_TYPE_H
 
-typedef struct user {
+typedef struct _user {
     char* username;
     char* password;
-};
+} user;
 
 #endif //FOOD_ORDERING_STRUCT_TYPE_H

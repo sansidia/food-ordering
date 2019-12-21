@@ -12,10 +12,10 @@
 
 void printFormHeader(char*);
 double paymentSum(double foodPrice, double drinkPrice, int drinkCode, int noDrink);
-int doesPasswordExist(char*username, struct user *registeredUsers, int nrOfUsers);
-int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUsers);
+int doesPasswordExist(char*username, user *registeredUsers, int nrOfUsers);
+int doesUsernameExist(char *username, user *registeredUsers, int nrOfUsers);
 
-int signIn(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
+int signIn(user mUser, user *registeredUsers, int nrOfUsers) {
     int signInComplete = 0;
     getchar();
     while (signInComplete == 0) {
@@ -36,7 +36,7 @@ int signIn(struct user mUser, struct user *registeredUsers, int nrOfUsers) {
 }
 
 
-int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUsers) {
+int doesUsernameExist(char *username, user *registeredUsers, int nrOfUsers) {
     for (int i = 0; i < nrOfUsers; ++i) {
         if (strcmp(username, registeredUsers[i].username) == 0)
             return 1;
@@ -44,7 +44,7 @@ int doesUsernameExist(char *username, struct user *registeredUsers, int nrOfUser
     return 0;
 }
 
-int doesPasswordExist(char *username, struct user *registeredUsers, int nrOfUsers) {
+int doesPasswordExist(char *username, user *registeredUsers, int nrOfUsers) {
     for (int i = 0; i < nrOfUsers; ++i) {
         if (strcmp(username, registeredUsers[i].password) == 0)
             return 1;
@@ -52,25 +52,25 @@ int doesPasswordExist(char *username, struct user *registeredUsers, int nrOfUser
     return 0;
 }
 
-int validatePassword (struct user user) {
+int validatePassword (user mUser) {
     setbuf(stdout, 0);
-    struct user auxUser;
-    auxUser.username = (char*) malloc(strlen(user.username)* sizeof(char));
-    auxUser.password = (char*) malloc(strlen(user.password)* sizeof(char));
-    auxUser = user;
-    if (strlen(user.password)<7) return 1;
+    user auxUser;
+    auxUser.username = (char*) malloc(strlen(mUser.username) * sizeof(char));
+    auxUser.password = (char*) malloc(strlen(mUser.password) * sizeof(char));
+    auxUser = mUser;
+    if (strlen(mUser.password) < 7) return 1;
     strlwr(auxUser.username); strlwr(auxUser.password);
     if (strstr(auxUser.password, auxUser.username)) return 4;
-    if (strchr(user.password, ',')==NULL && strchr(user.password, '!')==NULL && strchr(user.password, '_') ==NULL) return 3;
+    if (strchr(mUser.password, ',') == NULL && strchr(mUser.password, '!') == NULL && strchr(mUser.password, '_') == NULL) return 3;
     int nrOfDigits = 0;
-    for (int i = 0; i < strlen(user.password); ++i) {
-        if (isdigit(user.password[i])) nrOfDigits++;
+    for (int i = 0; i < strlen(mUser.password); ++i) {
+        if (isdigit(mUser.password[i])) nrOfDigits++;
     }
     if (nrOfDigits == 0) return 2;
     return 0;
 }
 
-int signUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers) {
+int signUp(user mUser, user *registeredUsers, int *nrOfUsers) {
     setbuf(stdout, 0);
     int signUpComplete = 0;
     getchar();
@@ -114,7 +114,7 @@ int signUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers) {
     }
 }
 
-void signInOrUp(struct user mUser, struct user *registeredUsers, int *nrOfUsers) {
+void signInOrUp(user mUser, user *registeredUsers, int *nrOfUsers) {
     setbuf(stdout, 0);
     printf("Welcome to Food Thingies!\n");
     int signComplete = 0;

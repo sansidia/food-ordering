@@ -14,22 +14,19 @@
 #define FILE_PATH "data.txt"
 #define NR_OF_USERS 30
 
-
-
-
 int main() {
     //region variable definition
     char *userInput;
     int nrOfUsers = 1;
-    struct user currentUser;
-    struct user *registeredUsers;
-    registeredUsers = (struct user*)malloc(NR_OF_USERS* sizeof(struct user));
+    user currentUser;
+    user *registeredUsers;
+    registeredUsers = (user*)malloc(NR_OF_USERS* sizeof(user));
     for (int l = 0; l < NR_OF_USERS; ++l) {
         registeredUsers[l].password = (char*)malloc(CHAR_LENGTH* sizeof(char));
         registeredUsers[l].username = (char*)malloc(CHAR_LENGTH* sizeof(char));
     }
 
-    struct user admin;
+    user admin;
     admin.password = (char*)malloc(strlen("admin")* sizeof(char));
     admin.username = (char*)malloc(strlen("admin")* sizeof(char));
     strcpy(admin.username, "admin");
