@@ -9,15 +9,15 @@
 #include "sign_in.h"
 
 int main() {
-    int nrOfFoods, nrOfDrinks, state=SIGN_IN;
-    food* foods, chosenFood;;
+    int nrOfFoods, nrOfDrinks, state=SIGN_IN, nrOfUsers = 0;
+    food* foods, chosenFood;
     drink* drinks;
     user* users, currentUser;
     order myOrder;
 
-    users = (user*)malloc(NR_OF_USERS* sizeof(user));
+    users = (user*)malloc(MAX_NR_OF_USERS * sizeof(user));
 
-    for (int i = 0; i < NR_OF_USERS; ++i) users[i] = createUser();
+    for (int i = 0; i < MAX_NR_OF_USERS; ++i) users[i] = createUser();
     defineDefaultUser(&users[0]);
 
     FILE* inputFile = fopen(FILE_PATH, "r");
@@ -80,7 +80,7 @@ int main() {
         free(foods[k].subtypes);
     }
     free(foods);
-    for (int l = 0; l < NR_OF_USERS; ++l) {
+    for (int l = 0; l < MAX_NR_OF_USERS; ++l) {
         free(users[l].username);
         free(users[l].password);
     }

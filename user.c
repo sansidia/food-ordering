@@ -18,3 +18,13 @@ void defineDefaultUser(user *u) {
     strcpy(u->username, "admin");
     strcpy(u->password, "admin");
 }
+
+userArray createUserArray(int nr) {
+    userArray u;
+    u.nrOfUsers = nr;
+    u.users = (user*) malloc(u.nrOfUsers* sizeof(user));
+    for (int i = 0; i < nr; ++i) {
+        u.users[i] = createUser();
+    }
+    return u;
+}

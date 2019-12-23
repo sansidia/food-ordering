@@ -10,7 +10,13 @@ typedef struct _user {
     char* password;
 } user;
 
+typedef struct _userArray {
+    int nrOfUsers;
+    user* users;
+} userArray;
+
 user createUser();
+userArray createUserArray(int nr);
 
 void defineDefaultUser(user*);
 
