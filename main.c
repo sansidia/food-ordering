@@ -25,6 +25,7 @@ int main() {
         loadDataFromFile(inputFile, &nrOfFoods, &foods, &nrOfDrinks, &drinks);
     else
         loadDataFromConsole(&nrOfFoods, &foods, &nrOfDrinks, &drinks);
+	inputFile = fclose();
 
     myOrder = createOrder();
 
