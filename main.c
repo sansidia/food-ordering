@@ -9,6 +9,7 @@
 #include "sign_in.h"
 
 int main() {
+    setbuf(stdout, 0);
     int nrOfFoods, nrOfDrinks, state=SIGN_IN;
     food* foods, chosenFood;
     drink* drinks;
@@ -45,7 +46,7 @@ int main() {
                 break;
             }
             case CHOOSE_DRINK: {
-                myOrder.chosenDrink = chooseDrink(&state, drinks, nrOfDrinks);
+                myOrder.chosenDrink = chooseDrink(&state, drinks, nrOfDrinks, &myOrder.drinkIsSelected);
                 break;
             }
             case CHOOSE_CUTLERY: {
