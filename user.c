@@ -22,9 +22,9 @@ void defineDefaultUser(user *u) {
 userArray createUserArray(int nr) {
     userArray u;
     u.nrOfUsers = nr;
-    u.users = (user*) malloc(u.nrOfUsers* sizeof(user));
-    for (int i = 0; i < nr; ++i) {
-        u.users[i] = createUser();
+    u.userList = (user*) malloc(MAX_NR_OF_USERS * sizeof(user));
+    for (int i = 0; i < MAX_NR_OF_USERS; ++i) {
+        u.userList[i] = createUser();
     }
     return u;
 }

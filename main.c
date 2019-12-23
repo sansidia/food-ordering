@@ -9,16 +9,15 @@
 #include "sign_in.h"
 
 int main() {
-    int nrOfFoods, nrOfDrinks, state=SIGN_IN, nrOfUsers = 0;
+    int nrOfFoods, nrOfDrinks, state=SIGN_IN;
     food* foods, chosenFood;
     drink* drinks;
-    user* users, currentUser;
+    user currentUser;
+    userArray users;
     order myOrder;
 
-    users = (user*)malloc(MAX_NR_OF_USERS * sizeof(user));
-
-    for (int i = 0; i < MAX_NR_OF_USERS; ++i) users[i] = createUser();
-    defineDefaultUser(&users[0]);
+    users = createUserArray(0);
+    defineDefaultUser(&users.userList[0]);
 
     FILE* inputFile = fopen(FILE_PATH, "r");
     if (inputFile != NULL)
@@ -33,7 +32,7 @@ int main() {
         switch (state) {
             case SIGN_IN: {
                 currentUser = createUser();
-                signInOrUp(&currentUser, users);
+                signInOrUp(&currentUser, &users);
                 state = CHOOSE_FOOD;
                 break;
             }
@@ -81,10 +80,14 @@ int main() {
     }
     free(foods);
     for (int l = 0; l < MAX_NR_OF_USERS; ++l) {
-        free(users[l].username);
-        free(users[l].password);
+        free(users.userList[l].username);
+        free(users.userList[l].password);
     }
-    free(users);
+    for (int n = 0; n < MAX_NR_OF_USERS; ++n) {
+        free(users.userList->username);
+        free(users.userList->password);
+    }
+    free(users.userList);
     free(currentUser.password); free(currentUser.username);
     free(myOrder.chosenFood.name); free(myOrder.chosenDrink.name); free(myOrder.additionalInfo);
     free(myOrder.cutlery);

@@ -12,7 +12,7 @@ typedef struct _user {
 
 typedef struct _userArray {
     int nrOfUsers;
-    user* users;
+    user* userList;
 } userArray;
 
 user createUser();
